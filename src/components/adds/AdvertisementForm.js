@@ -5,7 +5,11 @@ import "../style/AddForms.css";
 import Footer from "../Footer";
 import { fetchCategories, fetchAddById } from "../api";
 import { jwtDecode } from "jwt-decode";
-
+import {
+  usePostAddsMutation,
+  useUpdatePostMutation,
+} from "../../store/api/advertismentApi";
+import { useDispatch } from "react-redux";
 function AdvertisementForm({ isEditing }) {
   const [isFormChanged, setFormChanged] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -14,6 +18,9 @@ function AdvertisementForm({ isEditing }) {
   const token = localStorage.getItem("authToken");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [postAdds] = usePostAddsMutation();
+  const [updateAdd] = useUpdatePostMutation();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -140,27 +147,9 @@ function AdvertisementForm({ isEditing }) {
     try {
       let response;
       if (isEditing) {
-        response = await axios.put(
-          `http://localhost:3001/api/secured/edit/${id}`,
-          formDataToSend,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        response = await updateAdd({ updatedAdd: formDataToSend, id });
       } else {
-        response = await axios.post(
-          "http://localhost:3001/api/secured/create",
-          formDataToSend,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        response = await postAdds(formDataToSend);
       }
       console.log("Advertisement saved successfully:", response.data);
       if (isEditing) {

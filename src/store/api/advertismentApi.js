@@ -23,12 +23,33 @@ export const advertisementApi = createApi({
             ]
           : [{ type: "Advertisements", id: "LIST" }],
     }),
+
     postAdds: build.mutation({
       query: (newAdd) => {
         return {
-          url: "api/v1/public/postAdd",
+          url: "/api/secured/create",
           method: "POST",
           body: newAdd,
+        };
+      },
+      invalidatesTags: [{ type: "Advertisements", id: "LIST" }],
+    }),
+
+    updatePost: build.mutation({
+      query: ({ updatedAdd, id }) => {
+        return {
+          url: `api/secured/edit/${id}`,
+          method: "PUT",
+          body: updatedAdd,
+        };
+      },
+      invalidatesTags: [{ type: "Advertisements", id: "LIST" }],
+    }),
+    deletePost: build.mutation({
+      query: (id) => {
+        return {
+          url: `api/secured/delete/${id}`,
+          method: "DELETE",
         };
       },
       invalidatesTags: [{ type: "Advertisements", id: "LIST" }],
@@ -36,4 +57,9 @@ export const advertisementApi = createApi({
   }),
 });
 
-export const { useGetAddsQuery } = advertisementApi;
+export const {
+  useGetAddsQuery,
+  usePostAddsMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+} = advertisementApi;

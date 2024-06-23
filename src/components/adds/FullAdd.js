@@ -8,9 +8,11 @@ import { Carousel } from "react-bootstrap";
 import { findSimilars } from "../api";
 import { simplifyTimestamp } from "./utils";
 import { useLocation } from "react-router-dom";
+import { useDeletePostMutation } from "../../store/api/advertismentApi";
 import axios from "axios";
 
 export default function FullAdd() {
+  const [deletePost] = useDeletePostMutation();
   const location = useLocation();
   const { id } = useParams();
   const [add, setAdd] = useState(null);
@@ -65,14 +67,7 @@ export default function FullAdd() {
   }, [add]);
   const handleDelete = async () => {
     try {
-      const result = await axios.delete(
-        "http://localhost:3001/api/secured/delete/" + id,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const result = await deletePost(id);
       return navigate("/index", {
         state: { status: "success", message: "Successfully deleted" },
       });
