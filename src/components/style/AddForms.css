@@ -1,0 +1,57 @@
+.form-input{
+    font-size: larger;
+    height: 50px;
+    width: 100%;
+}
+.form-select{
+    height: 50px;
+    font-size: large;
+    color: white;
+    border: none;
+    background-color: #FF0084;
+    width: 30%;
+}
+input[type = "file"]{
+    
+    background: #FF0084;
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+    /* font-size: 0%; */
+    /* content-visibility: hidden;/ */
+}
+
+.selected-images{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.delete_icon{
+    height: 20px;
+}
+.delete_button
+{
+    align-self: first baseline;
+    background:none;
+    border: none;
+}
+.img-ctn{
+    height: 140px;
+    display: flex;
+    width: max-content;
+}
+.selected-images .img{
+    margin: auto;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+button[type="submit"]{
+    background-color: #FF0084;
+    color: white;
+    border: none;
+    border-radius: 5px;
+
+    padding: 5px;
+}
