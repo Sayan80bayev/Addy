@@ -10,13 +10,27 @@ import { simplifyTimestamp } from "./utils";
 import { useLocation } from "react-router-dom";
 import { useDeletePostMutation } from "../../store/api/advertismentApi";
 import axios from "axios";
+import { useGetByIdQuery, useGetSimilarsQuery } from "../../store";
 
 export default function FullAdd() {
   const [deletePost] = useDeletePostMutation();
   const location = useLocation();
   const { id } = useParams();
-  const [add, setAdd] = useState(null);
-  const [similars, setSimilars] = useState(null);
+  const [similarParams, setSimilarParams] = useState(null);
+
+  const {
+    data: add,
+    error: addError,
+    isLoading: addLoading,
+  } = useGetByIdQuery(id);
+
+  const {
+    data: similars,
+    error: similarsError,
+    isLoading: similarsLoading,
+  } = useGetSimilarsQuery(similarParams, {
+    skip: !similarParams, // Пропуск запроса, если нет параметров
+  });
   const [email, setEmail] = useState("");
   const token = localStorage.getItem("authToken") ?? "";
   const navigate = useNavigate();
@@ -28,7 +42,7 @@ export default function FullAdd() {
       try {
         const result = await fetchAddById(id);
         const userData = await getUserByEmail(result.data.email);
-        setAdd(result.data);
+        // setAdd(result.data);
         setUserData(userData);
       } catch (error) {
         console.error("Error fetching add:", error);
@@ -37,7 +51,15 @@ export default function FullAdd() {
 
     fetchData();
   }, [id, token]);
-
+  useEffect(() => {
+    if (add && add.category && add.price && add.id) {
+      setSimilarParams({
+        catId: add.category.category_id,
+        price: add.price,
+        addId: add.id,
+      });
+    }
+  }, [add]);
   useEffect(() => {
     try {
       const data = jwtDecode(token).sub ?? null;
@@ -46,25 +68,25 @@ export default function FullAdd() {
       console.log(error);
     }
   }, [token]);
-  useEffect(() => {
-    const findSimilarsAds = async () => {
-      try {
-        if (add.id && add.category && add.category.category_id && add.price) {
-          const data = await findSimilars(
-            add.category.category_id,
-            add.price,
-            add.id
-          );
-          setSimilars(data);
-        }
-      } catch (error) {
-        console.error("Error fetching similar ads:", error);
-      }
-    };
-    findSimilarsAds();
-    setMessage(location.state);
-    console.log(message);
-  }, [add]);
+  // useEffect(() => {
+  //   const findSimilarsAds = async () => {
+  //     try {
+  //       if (add.id && add.category && add.category.category_id && add.price) {
+  //         const data = await findSimilars(
+  //           add.category.category_id,
+  //           add.price,
+  //           add.id
+  //         );
+  //         setSimilars(data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching similar ads:", error);
+  //     }
+  //   };
+  //   findSimilarsAds();
+  //   setMessage(location.state);
+  //   console.log(message);
+  // }, [add]);
   const handleDelete = async () => {
     try {
       const result = await deletePost(id);
