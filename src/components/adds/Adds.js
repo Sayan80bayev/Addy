@@ -5,10 +5,19 @@ import { subscribe, unsubscribe } from "../api";
 import { jwtDecode } from "jwt-decode";
 import { simplifyTimestamp } from "./utils"; // Separate utility functions
 import BellButton from "./BellButton";
+import {
+  useCreateSubMutation,
+  useGetSubsQuery,
+  useDeleteSubMutation,
+} from "../../store";
+
 export default function Adds({ advertisements }) {
-  const [activeSubscriptions, setActiveSubscriptions] = useState([]);
+  // const [activeSubscriptions, setActiveSubscriptions] = useState([]);
+  const { data: activeSubscriptions = [] } = useGetSubsQuery();
   const [email, setEmail] = useState("");
   const [token, setToken] = useState();
+  const [createSubscribe] = useCreateSubMutation();
+  const [deleteSubscription] = useDeleteSubMutation();
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -16,7 +25,9 @@ export default function Adds({ advertisements }) {
       setToken(token);
     }
   }, []);
+
   const [changed, setChanged] = useState();
+
   useEffect(() => {
     const fetchSubscriptions = async () => {
       try {
@@ -31,15 +42,16 @@ export default function Adds({ advertisements }) {
           ...sub,
           isSubscribed: true,
         }));
-        setActiveSubscriptions(subscriptionsWithStatus);
+        // setActiveSubscriptions(subscriptionsWithStatus);
         if (changed) setChanged(false);
       } catch (error) {
         console.error("Error fetching subscriptions:", error);
       }
     };
 
-    fetchSubscriptions();
+    // fetchSubscriptions();
   }, [email, changed]);
+
   const handleBellClick = async (e, advertisementId) => {
     e.stopPropagation();
     const isSubscribed =
@@ -48,25 +60,20 @@ export default function Adds({ advertisements }) {
       ).length > 0;
     try {
       if (isSubscribed) {
-        await unsubscribe(email, advertisementId, token);
-        setActiveSubscriptions((prevSubs) =>
-          prevSubs.filter((id) => id !== advertisementId)
-        );
+        await deleteSubscription(advertisementId);
+        // setActiveSubscriptions((prevSubs) =>
+        //   prevSubs.filter((id) => id !== advertisementId)
+        // );
       } else {
-        await subscribe(email, advertisementId, token);
-        setActiveSubscriptions((prevSubs) => [...prevSubs, advertisementId]);
+        await createSubscribe(advertisementId);
+        // setActiveSubscriptions((prevSubs) => [...prevSubs, advertisementId]);
       }
     } catch (error) {
       console.error("Error handling subscription:", error);
     }
     setChanged(true);
   };
-  function truncateText(text, maxLength) {
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength - 3) + "...";
-    }
-    return text;
-  }
+
   return (
     <div className="ctn">
       {advertisements.map((advertisement) => {
