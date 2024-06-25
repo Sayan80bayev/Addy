@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../Footer";
 import { jwtDecode } from "jwt-decode";
-import { getUserByEmail, updateUser } from "../api";
 import { useNavigate } from "react-router-dom";
+import { useGetUserQuery, useUpdateUserMutation } from "../../store";
 
 const Profile = () => {
   const navigate = useNavigate();
-
-  const [imageUrl, setImageUrl] = useState();
+  const [updateUser] = useUpdateUserMutation();
+  const [imageUrl, setImageUrl] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -17,39 +17,28 @@ const Profile = () => {
   });
 
   const token = localStorage.getItem("authToken");
+  const email = jwtDecode(token).sub;
   const [message, setMessage] = useState("");
   const [avatarUpdated, setAvatarUpdated] = useState(false);
+  const { data: user = { avatar: "" } } = useGetUserQuery(email);
   useEffect(() => {
-    const fetchUserByEmail = async (email) => {
-      try {
-        const response = await getUserByEmail(email);
-        setFormData(response);
-        if (response.avatar) {
-          setImageUrl(response.avatar);
-        }
-      } catch (error) {
-        throw error;
-      }
-    };
-
     if (!localStorage.getItem("authToken")) {
       return navigate("/login", {
         state: { status: "error", message: "First you need to login!" },
       });
     }
-    fetchUserByEmail(jwtDecode(token).sub);
-  }, [token]);
+    setFormData(user);
+    setImageUrl(user.avatar);
+  }, [token, user]);
 
   const handleImageChange = (event) => {
     if (event.target.files.length > 0) {
-      // Check if files exist
       const file = event.target.files[0];
       const reader = new FileReader();
       setAvatarUpdated(true);
       reader.onload = (e) => {
         setImageUrl(e.target.result);
       };
-
       reader.readAsDataURL(file);
     }
   };
@@ -60,7 +49,8 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(formData.newPassword);
+    console.log(formData.confirmPassword);
     if (formData.newPassword != formData.confirmPassword) {
       setMessage("Passwords do not match");
       return;
@@ -73,15 +63,24 @@ const Profile = () => {
 
     try {
       const newPasswordToSend = formData.newPassword || null;
-      const updatedFormData = { ...formData, newPassword: newPasswordToSend };
-      const response = await updateUser(
-        updatedFormData,
-        imageUrl,
-        avatarUpdated,
-        token
-      );
+      const updatedFormData = {
+        ...formData,
+        newPassword: newPasswordToSend,
+      };
+      const formDataToSend = new FormData();
+      const userDataBlob = new Blob([JSON.stringify(updatedFormData)], {
+        type: "application/json",
+      });
+
+      formDataToSend.append("user", userDataBlob);
+      if (imageUrl && avatarUpdated) {
+        const blob = await fetch(imageUrl).then((res) => res.blob());
+        formDataToSend.append("avatar", blob, "avatar.png");
+      } else {
+        formDataToSend.append("avatar", new Blob());
+      }
+      const response = await updateUser(formDataToSend);
       setMessage({ status: "success", value: "Profile updated successfully" });
-      console.log(response);
     } catch (error) {
       setMessage("Error updating profile");
     }
