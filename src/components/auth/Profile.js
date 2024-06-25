@@ -3,6 +3,11 @@ import Footer from "../Footer";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { useGetUserQuery, useUpdateUserMutation } from "../../store";
+import {
+  imageChangeHelper,
+  validateNewPasswordHelper,
+  prepareFormDataHelper,
+} from "./profileHelpers";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -11,9 +16,9 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     email: "",
     name: "",
-    newPassword: "",
-    password: "",
-    confirmPassword: "",
+    newPassword: null,
+    password: null,
+    confirmPassword: null,
   });
 
   const token = localStorage.getItem("authToken");
@@ -32,15 +37,7 @@ const Profile = () => {
   }, [token, user]);
 
   const handleImageChange = (event) => {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      setAvatarUpdated(true);
-      reader.onload = (e) => {
-        setImageUrl(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    imageChangeHelper({ event, setImageUrl, setAvatarUpdated });
   };
 
   const handleClick = () => {
@@ -49,23 +46,24 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData.newPassword);
-    console.log(formData.confirmPassword);
-    if (formData.newPassword != formData.confirmPassword) {
-      setMessage("Passwords do not match");
-      return;
-    }
 
-    if (formData.newPassword && formData.newPassword.length < 8) {
-      setMessage("Password must be at least 8 characters long");
-      return;
-    }
+    const { newPassword, password, confirmPassword } = formData;
 
+    if (
+      !validateNewPasswordHelper({ formData, setMessage }) &&
+      (newPassword || password || confirmPassword)
+    )
+      return;
     try {
-      const newPasswordToSend = formData.newPassword || null;
+      // const formDataToSend = prepareFormDataHelper({
+      //   formData,
+      //   imageUrl,
+      //   avatarUpdated,
+      //   newPassword,
+      // });
       const updatedFormData = {
         ...formData,
-        newPassword: newPasswordToSend,
+        newPassword: newPassword,
       };
       const formDataToSend = new FormData();
       const userDataBlob = new Blob([JSON.stringify(updatedFormData)], {
@@ -80,7 +78,15 @@ const Profile = () => {
         formDataToSend.append("avatar", new Blob());
       }
       const response = await updateUser(formDataToSend);
-      setMessage({ status: "success", value: "Profile updated successfully" });
+      console.log(response);
+      if (response.error) {
+        setMessage({ status: "error", value: response.error.data });
+      } else {
+        setMessage({
+          status: "success",
+          value: "Profile updated successfully",
+        });
+      }
     } catch (error) {
       setMessage("Error updating profile");
     }
