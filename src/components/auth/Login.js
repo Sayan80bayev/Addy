@@ -11,7 +11,6 @@ export default function Login() {
 
   const [formData, setFormData] = useState(new FormData());
   const [authenticateUser] = useAuthenticateUserMutation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [message, setMessage] = useState(location.state || "");
@@ -26,7 +25,9 @@ export default function Login() {
       return;
     }
     try {
+      // const response = await authenticateUser(formData).unwrap();
       const response = await authenticateUser(formData).unwrap();
+      console.log(response);
       if (response.token) {
         console.log(response.token);
         localStorage.setItem("authToken", response.token);

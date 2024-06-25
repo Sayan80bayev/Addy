@@ -68,25 +68,7 @@ export default function FullAdd() {
       console.log(error);
     }
   }, [token]);
-  // useEffect(() => {
-  //   const findSimilarsAds = async () => {
-  //     try {
-  //       if (add.id && add.category && add.category.category_id && add.price) {
-  //         const data = await findSimilars(
-  //           add.category.category_id,
-  //           add.price,
-  //           add.id
-  //         );
-  //         setSimilars(data);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching similar ads:", error);
-  //     }
-  //   };
-  //   findSimilarsAds();
-  //   setMessage(location.state);
-  //   console.log(message);
-  // }, [add]);
+
   const handleDelete = async () => {
     try {
       const result = await deletePost(id);
@@ -99,8 +81,8 @@ export default function FullAdd() {
       });
     }
   };
-  if (!add) {
-    return <div></div>;
+  if (addLoading) {
+    return <div>Loading</div>;
   }
   const renderCategories = (category) => {
     return (
