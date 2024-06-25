@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import { jwtDecode } from "jwt-decode";
+const token = localStorage.getItem("authToken");
 export const subscriptionApi = createApi({
   reducerPath: "subscriptionApi",
 
@@ -17,7 +18,7 @@ export const subscriptionApi = createApi({
   endpoints: (build) => ({
     getSubs: build.query({
       query: () => ({
-        url: `/`,
+        url: ``,
       }),
       providesTags: (result) =>
         result
@@ -29,19 +30,19 @@ export const subscriptionApi = createApi({
     }),
     deleteSub: build.mutation({
       query: (subscription) => ({
-        url: `/`,
+        url: ``,
         method: "DELETE",
         body: subscription,
       }),
-      providesTags: ["Subscriptions"],
+      invalidatesTags: [{ type: "Subscriptions", id: "LIST" }],
     }),
     createSub: build.mutation({
       query: (subscription) => ({
-        url: `/`,
+        url: ``,
         method: "POST",
         body: subscription,
       }),
-      providesTags: ["Subscriptions"],
+      invalidatesTags: [{ type: "Subscriptions", id: "LIST" }],
     }),
   }),
 });

@@ -12,7 +12,6 @@ import {
 } from "../../store";
 
 export default function Adds({ advertisements }) {
-  // const [activeSubscriptions, setActiveSubscriptions] = useState([]);
   const { data: activeSubscriptions = [] } = useGetSubsQuery();
   const [email, setEmail] = useState("");
   const [token, setToken] = useState();
@@ -26,32 +25,6 @@ export default function Adds({ advertisements }) {
     }
   }, []);
 
-  const [changed, setChanged] = useState();
-
-  useEffect(() => {
-    const fetchSubscriptions = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        if (!token) return;
-
-        const response = await axios.get("http://localhost:3001/subs", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const subscriptionsWithStatus = response.data.map((sub) => ({
-          ...sub,
-          isSubscribed: true,
-        }));
-        // setActiveSubscriptions(subscriptionsWithStatus);
-        if (changed) setChanged(false);
-      } catch (error) {
-        console.error("Error fetching subscriptions:", error);
-      }
-    };
-
-    // fetchSubscriptions();
-  }, [email, changed]);
-
   const handleBellClick = async (e, advertisementId) => {
     e.stopPropagation();
     const isSubscribed =
@@ -59,19 +32,12 @@ export default function Adds({ advertisements }) {
         (sub) => sub.advertisement_id === advertisementId
       ).length > 0;
     try {
-      if (isSubscribed) {
-        await deleteSubscription(advertisementId);
-        // setActiveSubscriptions((prevSubs) =>
-        //   prevSubs.filter((id) => id !== advertisementId)
-        // );
-      } else {
-        await createSubscribe(advertisementId);
-        // setActiveSubscriptions((prevSubs) => [...prevSubs, advertisementId]);
-      }
+      isSubscribed
+        ? await deleteSubscription({ id: advertisementId, email: email })
+        : await createSubscribe({ id: advertisementId, email: email });
     } catch (error) {
       console.error("Error handling subscription:", error);
     }
-    setChanged(true);
   };
 
   return (
