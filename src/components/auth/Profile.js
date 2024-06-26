@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Footer from "../Footer";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import AlertIcon from "./icons/AlertIcon";
 import { useGetUserQuery, useUpdateUserMutation } from "../../store";
 import {
   imageChangeHelper,
@@ -55,12 +56,6 @@ const Profile = () => {
     )
       return;
     try {
-      // const formDataToSend = prepareFormDataHelper({
-      //   formData,
-      //   imageUrl,
-      //   avatarUpdated,
-      //   newPassword,
-      // });
       const updatedFormData = {
         ...formData,
         newPassword: newPassword,
@@ -78,8 +73,8 @@ const Profile = () => {
         formDataToSend.append("avatar", new Blob());
       }
       const response = await updateUser(formDataToSend);
-      console.log(response);
-      if (response.error) {
+
+      if (response.error && response.status !== 200) {
         setMessage({ status: "error", value: response.error.data });
       } else {
         setMessage({
@@ -88,7 +83,8 @@ const Profile = () => {
         });
       }
     } catch (error) {
-      setMessage("Error updating profile");
+      console.log(error.message);
+      setMessage({ value: "Error updating profile" });
     }
   };
 
@@ -145,21 +141,7 @@ const Profile = () => {
             >
               <div>
                 <h6 class="mb-0.5 flex items-center gap-2 text-base uppercase sm:mb-2">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                    role="img"
-                    class="text-lg sm:text-2xl iconify iconify--uis"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="m22.7 17.5l-8.1-14c-.8-1.4-2.7-1.9-4.1-1.1c-.5.3-.9.7-1.1 1.1l-8.1 14c-.8 1.4-.3 3.3 1.1 4.1c.5.3 1 .4 1.5.4H20c1.7 0 3-1.4 3-3c.1-.6-.1-1.1-.3-1.5M12 18c-.6 0-1-.4-1-1s.4-1 1-1s1 .4 1 1s-.4 1-1 1m1-5c0 .6-.4 1-1 1s-1-.4-1-1V9c0-.6.4-1 1-1s1 .4 1 1z"
-                    ></path>
-                  </svg>{" "}
-                  ALERT
+                  <AlertIcon /> ALERT
                 </h6>{" "}
                 <div class="text-sm leading-normal sm:text-base">
                   <p>{message.value}</p>

@@ -12,11 +12,17 @@ export const imageChangeHelper = ({ event, setImageUrl, setAvatarUpdated }) => {
 };
 export const validateNewPasswordHelper = ({ formData, setMessage }) => {
   const { password, newPassword, confirmPassword } = formData;
-  console.log(password, newPassword, confirmPassword);
 
-  if (!password || !newPassword || !confirmPassword) {
+  const allFieldsFilled = password && newPassword && confirmPassword;
+  const allFieldsEmpty = !password && !newPassword && !confirmPassword;
+
+  if (!allFieldsFilled && !allFieldsEmpty) {
     setMessage({ value: "Please fill all the gaps to change the password" });
     return false;
+  }
+
+  if (allFieldsEmpty) {
+    return true;
   }
 
   if (newPassword !== confirmPassword) {
@@ -31,6 +37,7 @@ export const validateNewPasswordHelper = ({ formData, setMessage }) => {
 
   return true;
 };
+
 export const prepareFormDataHelper = async ({
   formData,
   imageUrl,
