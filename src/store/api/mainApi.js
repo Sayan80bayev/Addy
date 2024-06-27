@@ -5,7 +5,6 @@ export const mainApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001/api/v1/public",
   }),
-  tagTypes: ["Advertisements"],
   endpoints: (build) => ({
     searchByName: build.query({
       query: (name) => ({
