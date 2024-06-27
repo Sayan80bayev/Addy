@@ -115,7 +115,7 @@ function AdvertisementForm({ isEditing }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!isFormChanged) {
+    if (!isFormChanged && isEditing) {
       setErrorMessage("No changes made to the form.");
       return;
     }
@@ -153,15 +153,15 @@ function AdvertisementForm({ isEditing }) {
       } else {
         response = await postAdds(formDataToSend);
       }
-      console.log("Advertisement saved successfully:", response);
-      if (isEditing) {
+      if (response.error) throw response.error;
+      if (isEditing && !response.error) {
         navigate(`/view/${id}`, {
           state: {
             status: "success",
             message: "Advertisement saved successfully",
           },
         });
-      } else {
+      } else if (!response.error) {
         navigate("/index", {
           state: {
             status: "success",
