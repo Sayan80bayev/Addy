@@ -8,7 +8,7 @@ const AdditionaInfo = ({ props }) => {
     <div className="ctn-additional">
       <AuthorSection props={{ userData, id, email, add, handleDelete }} />
       {similars != null && similars.length > 0 && (
-        <SimilarsSection similars={similars} />
+        <SimilarsSection similars={similars} add={add} />
       )}
     </div>
   );
