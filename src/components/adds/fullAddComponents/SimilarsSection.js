@@ -28,7 +28,7 @@ const SimilarsSection = ({ similars, add }) => {
               alt={ad.title}
             />
           )}
-          <ul>
+          <ul className="similarInfo">
             <br />
             <li>
               <Link to={"/view/" + ad.id} style={{ fontWeight: "bold" }}>
