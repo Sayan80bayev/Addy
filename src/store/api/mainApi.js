@@ -5,6 +5,7 @@ export const mainApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3001/api/v1/public",
   }),
+  tagTypes: ["Advertisements"],
   endpoints: (build) => ({
     searchByName: build.query({
       query: (name) => ({
@@ -16,11 +17,7 @@ export const mainApi = createApi({
         url: `/cat/${id}`,
       }),
     }),
-    getById: build.query({
-      query: (id) => ({
-        url: `/add/${id}`,
-      }),
-    }),
+
     getCategories: build.query({
       query: () => ({
         url: "getCats",
@@ -40,7 +37,6 @@ export const mainApi = createApi({
 });
 
 export const {
-  useGetByIdQuery,
   useGetSimilarsQuery,
   useGetByCatQuery,
   useGetCategoriesQuery,

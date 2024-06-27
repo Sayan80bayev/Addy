@@ -8,7 +8,7 @@ import {
   validateNewPasswordHelper,
   prepareFormDataHelper,
 } from "./profileHelpers";
-import AlerSuccess from "../feedback/AlerSuccess";
+import AlertSuccess from "../feedback/AlertSuccess";
 import AlertError from "../feedback/AlertError";
 import AlertWarning from "../feedback/AlertWarning";
 import PasswordChange from "./profileComponents/PasswordChange";
@@ -99,7 +99,7 @@ const Profile = () => {
         <h2 className="mb-3">Profile</h2>
         {message &&
           (message?.status == "success" ? (
-            <AlerSuccess message={message.value} />
+            <AlertSuccess message={message.value} />
           ) : (
             <AlertError message={message.value} />
           ))}
