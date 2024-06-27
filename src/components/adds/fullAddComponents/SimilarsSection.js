@@ -3,6 +3,7 @@ import { simplifyTimestamp } from "../utils";
 import { Link } from "react-router-dom";
 
 const SimilarsSection = ({ similars, add }) => {
+  console.log(add);
   return (
     <>
       <h4>
@@ -15,7 +16,7 @@ const SimilarsSection = ({ similars, add }) => {
       </h4>
       {similars.slice(0, 3).map((ad, i) => (
         <div className="ctn-recomendations" key={i}>
-          {ad.images.length > 0 ? (
+          {ad && ad.images && ad.images.length > 0 ? (
             <img
               className="rec_img"
               src={`data:image/jpeg;base64,${ad.images[0].imageData}`}
@@ -31,13 +32,16 @@ const SimilarsSection = ({ similars, add }) => {
           <ul className="similarInfo">
             <br />
             <li>
-              <Link to={"/view/" + ad.id} style={{ fontWeight: "bold" }}>
-                {ad.title}
+              <Link
+                to={ad ? "/view/" + ad.id : "#"}
+                style={{ fontWeight: "bold" }}
+              >
+                {ad ? ad.title : "Title Not Available"}
               </Link>
             </li>
             <li>
               <p className="price" style={{ fontWeight: "bold" }}>
-                {ad.price}
+                {ad ? ad.price : "Price Not Available"}
               </p>
             </li>
             <li>
@@ -47,7 +51,9 @@ const SimilarsSection = ({ similars, add }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <small>{simplifyTimestamp(ad.date)}</small>
+                <small>
+                  {ad ? simplifyTimestamp(ad.date) : "Date Not Available"}
+                </small>
               </p>{" "}
             </li>
           </ul>
@@ -56,7 +62,9 @@ const SimilarsSection = ({ similars, add }) => {
       <br />
       {similars.length > 3 && (
         <Link
-          to={`/index/similars/${add.id}/${add.category.category_id}/${add.price}`}
+          to={`/index/similars/${add ? add.id : ""}/${
+            add && add.category ? add.category.category_id : ""
+          }/${add ? add.price : ""}`}
           className="btn btn-danger btn-custom"
         >
           <img
