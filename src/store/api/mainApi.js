@@ -16,11 +16,7 @@ export const mainApi = createApi({
         url: `/cat/${id}`,
       }),
     }),
-    getById: build.query({
-      query: (id) => ({
-        url: `/add/${id}`,
-      }),
-    }),
+
     getCategories: build.query({
       query: () => ({
         url: "getCats",
@@ -40,7 +36,6 @@ export const mainApi = createApi({
 });
 
 export const {
-  useGetByIdQuery,
   useGetSimilarsQuery,
   useGetByCatQuery,
   useGetCategoriesQuery,

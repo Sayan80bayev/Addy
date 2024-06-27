@@ -113,3 +113,14 @@ ul{
     border-radius: 5px;
     margin-left: 15px;
 }
+.similarInfo {
+    max-width:60%;
+    padding: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.similarInfo li{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

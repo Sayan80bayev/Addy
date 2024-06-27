@@ -151,7 +151,7 @@ function AdvertisementForm({ isEditing }) {
       } else {
         response = await postAdds(formDataToSend);
       }
-      console.log("Advertisement saved successfully:", response.data);
+      console.log("Advertisement saved successfully:", response);
       if (isEditing) {
         navigate(`/view/${id}`, {
           state: {

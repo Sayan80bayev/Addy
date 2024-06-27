@@ -1,6 +1,6 @@
 import React from "react";
 import SuccessIcon from "../icons/SuccesIcon";
-const AlerSuccess = ({ message }) => {
+const AlertSuccess = ({ message }) => {
   return (
     <div
       class="alert alert-warning rounded-md custom-alert-green"
@@ -19,4 +19,4 @@ const AlerSuccess = ({ message }) => {
   );
 };
 
-export default AlerSuccess;
+export default AlertSuccess;

@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 export const advertisementApi = createApi({
   reducerPath: "advertisementApi",
   baseQuery: fetchBaseQuery({
@@ -23,7 +24,18 @@ export const advertisementApi = createApi({
             ]
           : [{ type: "Advertisements", id: "LIST" }],
     }),
-
+    getById: build.query({
+      query: (id) => ({
+        url: `/api/v1/public/add/${id}`,
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              { type: "Advertisements", id: result.id },
+              { type: "Advertisements", id: "LIST" }, // Add this line
+            ]
+          : [{ type: "Advertisements", id: "LIST" }],
+    }),
     postAdds: build.mutation({
       query: (newAdd) => {
         return {
@@ -45,6 +57,7 @@ export const advertisementApi = createApi({
       },
       invalidatesTags: [{ type: "Advertisements", id: "LIST" }],
     }),
+
     deletePost: build.mutation({
       query: (id) => {
         return {
@@ -62,4 +75,5 @@ export const {
   usePostAddsMutation,
   useUpdatePostMutation,
   useDeletePostMutation,
+  useGetByIdQuery,
 } = advertisementApi;
