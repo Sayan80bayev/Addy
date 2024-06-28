@@ -3,32 +3,19 @@ import { useParams } from "react-router-dom";
 import LoadingIcon from "../LoadingIcon";
 import { findSimilars } from "../api";
 import Adds from "./Adds";
+import { useGetSimilarsQuery } from "../../store";
 
 function SimilarAdds() {
-  const [advertisements, setAdvertisements] = useState([]);
-  const [loading, setLoading] = useState(false);
   const { id, cat_id, price } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const data = await findSimilars(cat_id, price, id);
-        setAdvertisements(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [id, cat_id, price]);
+  const { data: advertisements = [], isFetching } = useGetSimilarsQuery({
+    catId: cat_id,
+    price: price,
+    addId: id,
+  });
 
   return (
     <>
-      {loading && <LoadingIcon />}
-      <Adds advertisements={advertisements} />
+      {isFetching ? <LoadingIcon /> : <Adds advertisements={advertisements} />}
     </>
   );
 }
