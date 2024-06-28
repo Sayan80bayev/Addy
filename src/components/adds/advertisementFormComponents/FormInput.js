@@ -11,6 +11,7 @@ const FormInput = ({ props }) => {
     images = [],
     handleImageDelete,
   } = props;
+
   const imageIconPath = process.env.PUBLIC_URL + "/plus-svgrepo-com.png";
   return (
     <form onSubmit={handleSubmit}>
