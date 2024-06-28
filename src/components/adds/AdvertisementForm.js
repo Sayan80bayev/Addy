@@ -1,76 +1,85 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import "../style/AddForms.css";
 import Footer from "../Footer";
-import { fetchCategories, fetchAddById } from "../api";
 import { jwtDecode } from "jwt-decode";
 import {
   usePostAddsMutation,
   useUpdatePostMutation,
 } from "../../store/api/advertismentApi";
 import { useDispatch } from "react-redux";
+import FormInput from "./advertisementFormComponents/FormInput";
+import { useGetCatsQuery } from "../../store/api/categoryApi";
+import { useGetByIdQuery } from "../../store/api/advertismentApi";
+import AlertError from "../feedback/AlertError";
+import {
+  validateFormChanges,
+  validateImages,
+} from "./advertisementFormComponents/formHelpers";
+
 function AdvertisementForm({ isEditing }) {
-  const [isFormChanged, setFormChanged] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [images, setImages] = useState([]);
   const { id } = useParams();
-  const token = localStorage.getItem("authToken");
-  const [email, setEmail] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
   const [postAdds] = usePostAddsMutation();
   const [updateAdd] = useUpdatePostMutation();
-  const dispatch = useDispatch();
+  const { data: categories = [] } = useGetCatsQuery();
+  const {
+    data: adResponse = {
+      title: "",
+      description: "",
+      price: "",
+      category_id: "",
+    },
+    isLoading: isAdLoading,
+  } = useGetByIdQuery(id, { skip: !isEditing });
+  //note: emai field is for checking that ad's owner editinhg not someone else
+  const [email, setEmail] = useState("");
+  const [images, setImages] = useState([]);
+  const [isFormChanged, setFormChanged] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: "",
     category_id: "",
   });
-  const navigate = useNavigate();
-  // Note: Fetching data for editing
-  const fetchData = async () => {
-    try {
-      const data = await fetchCategories();
-      setCategories(data);
-      if (isEditing) {
-        const adResponse = await fetchAddById(id);
-        const formDataFromObject = {
-          title: adResponse.data.title || "",
-          description: adResponse.data.description || "",
-          price: adResponse.data.price.toString() || "",
-          category_id: adResponse.data.category.category_id.toString() || "",
-        };
-        setFormData(formDataFromObject);
+  const setToFormData = () => {
+    if (!adResponse) return;
 
-        //Note  Decode images from base64 and set them
-        const decodedFiles = adResponse.data.images.map((imageData) => {
-          const byteCharacters = atob(imageData.imageData);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-          }
-          const byteArray = new Uint8Array(byteNumbers);
+    const formDataFromObject = {
+      title: adResponse.title || "",
+      description: adResponse.description || "",
+      price: adResponse.price ? adResponse.price.toString() : "",
+      category_id: adResponse.category?.category_id
+        ? adResponse.category.category_id.toString()
+        : "",
+    };
+    setFormData(formDataFromObject);
 
-          const file = new File([byteArray], imageData.fileName, {
-            type: "image/png",
-          });
-
-          return file;
-        });
-        setImages(decodedFiles);
-
-        //Note Set email for editing
-        setEmail(adResponse.data.email);
+    const decodedFiles = adResponse.images.map((imageData) => {
+      const byteCharacters = atob(imageData.imageData);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-    } catch (error) {
-      console.log(error);
-    }
+      const byteArray = new Uint8Array(byteNumbers);
+
+      const file = new File([byteArray], imageData.fileName, {
+        type: "image/png",
+      });
+
+      return file;
+    });
+    setImages(decodedFiles);
+    setEmail(adResponse.email);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isEditing && !isAdLoading && adResponse) {
+      setToFormData();
+    }
+  }, [isEditing, isAdLoading, adResponse]);
 
   const handleChange = (event) => {
     setFormChanged(true);
@@ -84,23 +93,14 @@ function AdvertisementForm({ isEditing }) {
   const handleImageChange = (e) => {
     setFormChanged(true);
     const files = Array.from(e.target.files);
-    const validImageExtensions = [".jpg", ".jpeg", ".png"];
-
-    const filteredImages = files.filter((file) => {
-      if (!file.type || file.type === "") {
-        file.type = "image/png"; // Note Default to PNG if type is empty
-      }
-
-      const extension = file.name.toLowerCase().slice(-4);
-      return (
-        validImageExtensions.includes(extension) &&
-        file.type.startsWith("image/")
-      );
-    });
+    const filteredImages = validateImages(files);
 
     if (filteredImages.length > 0) {
       setImages((prevImages) => [...prevImages, ...filteredImages]);
     } else {
+      setErrorMessage(
+        "Invalid image format. Please select JPEG or PNG images."
+      );
       console.error("Invalid image format. Please select JPEG or PNG images.");
     }
   };
@@ -113,18 +113,19 @@ function AdvertisementForm({ isEditing }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!isFormChanged) {
-      setErrorMessage("No changes made to the form.");
-      return;
-    }
-
     const requiredFields = ["title", "description", "price", "category_id"];
     const emptyFields = requiredFields.filter((field) => !formData[field]);
-
-    if (emptyFields.length > 0) {
-      setErrorMessage(`Please fill out all required fields`);
+    if (
+      !validateFormChanges(
+        isFormChanged,
+        isEditing,
+        emptyFields,
+        setErrorMessage
+      )
+    ) {
       return;
     }
+    console.log("hello");
 
     const formDataToSend = new FormData();
 
@@ -151,15 +152,15 @@ function AdvertisementForm({ isEditing }) {
       } else {
         response = await postAdds(formDataToSend);
       }
-      console.log("Advertisement saved successfully:", response);
-      if (isEditing) {
+      if (response.error) throw response.error;
+      if (isEditing && !response.error) {
         navigate(`/view/${id}`, {
           state: {
             status: "success",
             message: "Advertisement saved successfully",
           },
         });
-      } else {
+      } else if (!response.error) {
         navigate("/index", {
           state: {
             status: "success",
@@ -173,7 +174,6 @@ function AdvertisementForm({ isEditing }) {
     }
   };
 
-  const imageIconPath = process.env.PUBLIC_URL + "/plus-svgrepo-com.png";
   if (!localStorage.getItem("authToken")) {
     return navigate("/login", {
       state: { status: "error", message: "First you need to login!" },
@@ -189,156 +189,23 @@ function AdvertisementForm({ isEditing }) {
   }
   return (
     <main>
-      {errorMessage && (
-        <div
-          class="alert alert-warning rounded-md custom-alert-red"
-          style={{ padding: "7px", height: "60px" }}
-        >
-          <div>
-            <h6 class="mb-0.5 flex items-center gap-2 text-base uppercase sm:mb-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                role="img"
-                class="text-lg sm:text-2xl iconify iconify--uis"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="m22.7 17.5l-8.1-14c-.8-1.4-2.7-1.9-4.1-1.1c-.5.3-.9.7-1.1 1.1l-8.1 14c-.8 1.4-.3 3.3 1.1 4.1c.5.3 1 .4 1.5.4H20c1.7 0 3-1.4 3-3c.1-.6-.1-1.1-.3-1.5M12 18c-.6 0-1-.4-1-1s.4-1 1-1s1 .4 1 1s-.4 1-1 1m1-5c0 .6-.4 1-1 1s-1-.4-1-1V9c0-.6.4-1 1-1s1 .4 1 1z"
-                ></path>
-              </svg>{" "}
-              ALERT
-            </h6>{" "}
-            <div class="text-sm leading-normal sm:text-base">
-              <p>{errorMessage}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      {errorMessage && <AlertError message={errorMessage} />}
       <div className="mb-5" style={{ display: "flex" }}>
         <div style={{ width: "60%" }}>
           <h2>{isEditing ? "Edit" : "Add New"} Advertisement</h2>
           <br />
           <br />
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <h6>
-                <label htmlFor="title">Title*</label>
-              </h6>
-              <input
-                className="form-input"
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                placeholder="Toyota Camry 50"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mb-3">
-              <h6>
-                <label htmlFor="description">Description*</label>
-              </h6>
-              <textarea
-                className="form-input"
-                id="description"
-                name="description"
-                value={formData.description}
-                placeholder="Think about description"
-                onChange={handleChange}
-                style={{
-                  whiteSpace: "pre-wrap",
-                  wordWrap: "break-word",
-                  resize: "none",
-                  height: "200px",
-                }}
-              />
-            </div>
-            <div className="mb-3">
-              <h6>
-                <label htmlFor="price">Price*</label>
-              </h6>
-              <input
-                type="number"
-                className="form-input"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="mb-3">
-              <h6>
-                <label htmlFor="category">Category*</label>
-              </h6>
-              <select
-                name="category_id"
-                className="form-select"
-                value={formData.category_id}
-                onChange={handleChange}
-              >
-                <option value="">Select Category</option> // Added value
-                attribute
-                {categories.map((category) => (
-                  <option
-                    key={category.category_id}
-                    value={category.category_id}
-                  >
-                    {category.category_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-3">
-              <h6>
-                <label htmlFor="image">Images*</label>
-              </h6>
-              <div className="image-selector">
-                <input
-                  type="file"
-                  id="image-upload"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                  hidden
-                />
-                <label htmlFor="image-upload">
-                  <i className="fas fa-plus"></i>
-                  <img className="rec_icon" src={imageIconPath} alt="Addy" />
-                </label>
-                <div className="selected-images">
-                  {images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="img-ctn"
-                      onClick={() => handleImageDelete(image)}
-                    >
-                      <img
-                        className="img"
-                        src={image.src ?? URL.createObjectURL(image)}
-                        alt={`Image ${index + 1}`}
-                      />
-                      <div className="delete_overlay">
-                        <img
-                          className="delete_icon"
-                          src={
-                            process.env.PUBLIC_URL + "/plus-svgrepo-com (1).png"
-                          }
-                          alt="Delete"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <button type="submit">Submit</button>
-            <button onClick={() => navigate(-1)} className="scnd">
-              Back
-            </button>
-          </form>
+          <FormInput
+            props={{
+              formData,
+              handleSubmit,
+              categories,
+              handleChange,
+              handleImageChange,
+              handleImageDelete,
+              images,
+            }}
+          />
         </div>
       </div>
       <Footer />

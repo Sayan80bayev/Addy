@@ -4,6 +4,7 @@ import { authenticationApi } from "./api/authenticationApi";
 import { mainApi } from "./api/mainApi";
 import { subscriptionApi } from "./api/subscriptionApi";
 import { profileApi } from "./api/profileApi";
+import { categoryApi } from "./api/categoryApi";
 export const store = configureStore({
   reducer: {
     [advertisementApi.reducerPath]: advertisementApi.reducer,
@@ -11,6 +12,7 @@ export const store = configureStore({
     [mainApi.reducerPath]: mainApi.reducer,
     [subscriptionApi.reducerPath]: subscriptionApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -18,6 +20,7 @@ export const store = configureStore({
       authenticationApi.middleware,
       mainApi.middleware,
       subscriptionApi.middleware,
-      profileApi.middleware
+      profileApi.middleware,
+      categoryApi.middleware
     ),
 });
