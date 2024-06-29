@@ -6,11 +6,11 @@ import { useGetAddsQuery, useGetSortedByQuery } from "../../store";
 
 function AdvertisementList() {
   const [sortCriteria, setSortCriteria] = useState(null);
-  const { data: advertisements = [], isLoading: isLoadingAdds } =
+  const { data: advertisements = [], isFetching: isFetchingAdds } =
     useGetAddsQuery();
   const {
     data: sortedAdvertisements = [],
-    isLoading: isLoadingSorted,
+    isFetching: isFetchingSorted,
     refetch: refetchSorted,
   } = useGetSortedByQuery(sortCriteria, { skip: sortCriteria === null });
 
@@ -24,15 +24,14 @@ function AdvertisementList() {
     setSortCriteria(criteria);
   };
 
-  const isLoading = sortCriteria !== null ? isLoadingSorted : isLoadingAdds;
+  const isFetching = sortCriteria !== null ? isFetchingSorted : isFetchingAdds;
   const adsToDisplay =
     sortCriteria !== null ? sortedAdvertisements : advertisements;
 
   return (
     <>
       <Sorting onSort={handleSort} />
-      {isLoading && <LoadingIcon />}
-      <Adds advertisements={adsToDisplay} />
+      {isFetching ? <LoadingIcon /> : <Adds advertisements={adsToDisplay} />}
     </>
   );
 }

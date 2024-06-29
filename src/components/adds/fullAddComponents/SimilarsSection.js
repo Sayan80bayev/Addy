@@ -3,7 +3,6 @@ import { simplifyTimestamp } from "../utils";
 import { Link } from "react-router-dom";
 
 const SimilarsSection = ({ similars, add }) => {
-  console.log(add);
   return (
     <>
       <h4>
