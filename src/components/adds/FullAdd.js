@@ -12,6 +12,7 @@ import AlertError from "../feedback/AlertError";
 import AlertSuccess from "../feedback/AlertSuccess";
 import AddInfo from "./fullAddComponents/AddInfo";
 import AdditionaInfo from "./fullAddComponents/AdditionaInfo";
+import NotFound from "../feedback/NotFound";
 export default function FullAdd() {
   const [deletePost] = useDeletePostMutation();
   const location = useLocation();
@@ -19,7 +20,7 @@ export default function FullAdd() {
   const [similarParams, setSimilarParams] = useState(null);
 
   const {
-    data: add = { images: [], title: "" },
+    data: add,
     error: addError,
     isLoading: addLoading,
   } = useGetByIdQuery(id);
@@ -113,17 +114,21 @@ export default function FullAdd() {
           <AlertError message={message.message} />
         ))}
       {window.history.replaceState({}, "")}
+      {add ? (
+        <div className="ctn-full mb-4">
+          <AddInfo
+            add={add}
+            base64ToUrl={base64ToUrl}
+            renderCategories={renderCategories}
+          />
+          <AdditionaInfo
+            props={{ userData, add, similars, email, handleDelete, id }}
+          />
+        </div>
+      ) : (
+        <NotFound />
+      )}
 
-      <div className="ctn-full mb-4">
-        <AddInfo
-          add={add}
-          base64ToUrl={base64ToUrl}
-          renderCategories={renderCategories}
-        />
-        <AdditionaInfo
-          props={{ userData, add, similars, email, handleDelete, id }}
-        />
-      </div>
       <Footer />
     </main>
   );
