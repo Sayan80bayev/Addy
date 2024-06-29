@@ -49,10 +49,13 @@ export default function FullAdd() {
     data: userData,
     isFetching: userFetching,
     isSuccess: userSuccess,
+
+    isError: userError,
   } = useGetUserQuery(email);
 
   // Update similarParams only when add changes
   const isPageFetched = addSuccess && similarSuccess && userSuccess;
+  const isPageFound = !addError && !similarsError && !userError;
 
   useEffect(() => {
     // return () => {
@@ -103,22 +106,26 @@ export default function FullAdd() {
         ))}
       {window.history.replaceState({}, "")}
       <div className="ctn-full mb-4">
-        {isPageFetched ? (
-          <>
-            <AddInfo
-              add={add}
-              base64ToUrl={base64ToUrl}
-              renderCategories={renderCategories}
-            />
-            <AdditionaInfo
-              props={{ userData, add, similars, email, handleDelete, id }}
-            />
-          </>
+        {isPageFound ? (
+          isPageFetched ? (
+            <>
+              <AddInfo
+                add={add}
+                base64ToUrl={base64ToUrl}
+                renderCategories={renderCategories}
+              />
+              <AdditionaInfo
+                props={{ userData, add, similars, email, handleDelete, id }}
+              />
+            </>
+          ) : (
+            <>
+              <AddInfoLoader />
+              <SimilarLoader />
+            </>
+          )
         ) : (
-          <>
-            <AddInfoLoader />
-            <SimilarLoader />
-          </>
+          <NotFound />
         )}
       </div>
       <Footer />
