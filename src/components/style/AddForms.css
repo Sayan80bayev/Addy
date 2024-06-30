@@ -1,7 +1,11 @@
 .form-input{
+    background-color: #333333;
     font-size: larger;
     height: 50px;
     width: 100%;
+    color: white;
+    border : 1px solid #FF0084;
+    border-radius: 20px
 }
 .form-select{
     height: 50px;
@@ -48,10 +52,17 @@ input[type = "file"]{
     object-fit: cover;
 }
 button[type="submit"]{
-    background-color: #FF0084;
+    background-color: #FF0089;
     color: white;
     border: none;
     border-radius: 5px;
 
     padding: 5px;
 }
+.textarea-container {
+    position: relative;
+    width: fit-content;
+    margin-right: 20px; /* Adjust to create space for the custom scrollbar */
+  }
+
+  

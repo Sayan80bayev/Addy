@@ -191,7 +191,7 @@ function AdvertisementForm({ isEditing }) {
     <main>
       {errorMessage && <AlertError message={errorMessage} />}
       <div className="mb-5" style={{ display: "flex" }}>
-        <div style={{ width: "60%" }}>
+        <div style={{ width: "80%" }}>
           <h2>{isEditing ? "Edit" : "Add New"} Advertisement</h2>
           <br />
           <br />

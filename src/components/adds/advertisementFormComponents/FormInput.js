@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import CustomTextArea from "./CustomTextArea";
 const FormInput = ({ props }) => {
   const navigate = useNavigate();
   const {
@@ -33,20 +34,7 @@ const FormInput = ({ props }) => {
         <h6>
           <label htmlFor="description">Description*</label>
         </h6>
-        <textarea
-          className="form-input"
-          id="description"
-          name="description"
-          value={formData.description}
-          placeholder="Think about description"
-          onChange={handleChange}
-          style={{
-            whiteSpace: "pre-wrap",
-            wordWrap: "break-word",
-            resize: "none",
-            height: "200px",
-          }}
-        />
+        <CustomTextArea formData={formData} handleChange={handleChange} />
       </div>
       <div className="mb-3">
         <h6>
