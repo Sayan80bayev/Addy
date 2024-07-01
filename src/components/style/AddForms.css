@@ -5,7 +5,9 @@
     width: 100%;
     color: white;
     border : 1px solid #FF0084;
-    border-radius: 20px
+    border-radius: 20px;
+    padding: 15px;
+
 }
 .form-select{
     height: 50px;
@@ -64,5 +66,20 @@ button[type="submit"]{
     width: fit-content;
     margin-right: 20px; /* Adjust to create space for the custom scrollbar */
   }
-
+#description-container{
+    height: max-content;  
+}
+#description{
+    background-color: transparent;
+    color: white;
+    width: 100%;
+    border: none;
+}
+#description::-webkit-scrollbar{
+    overlay-y: -20px;
+}
+#description::-webkit-scrollbar-track{
+    background-color: transparent;
+    overlay: 20px;
+}
   

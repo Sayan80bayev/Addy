@@ -67,6 +67,7 @@ export default function FullAdd() {
         addId: add.id,
       });
     }
+    setMessage(location.state);
     // };
   }, [addSuccess]);
 
