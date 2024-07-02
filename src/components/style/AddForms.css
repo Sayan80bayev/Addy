@@ -28,6 +28,10 @@ input[type = "file"]{
 }
 
 .selected-images{
+    margin-top: 20px;
+    background: #333333;
+    padding: 10px 25px 10px 25px;
+    border-radius: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -48,6 +52,7 @@ input[type = "file"]{
     width: max-content;
 }
 .selected-images .img{
+    border-radius: 10px;
     margin: auto;
     height: 100px;
     width: 100px;

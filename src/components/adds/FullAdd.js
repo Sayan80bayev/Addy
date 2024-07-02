@@ -3,7 +3,6 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import "../style/FullAdd.css";
 import Footer from "../Footer";
 import { jwtDecode } from "jwt-decode";
-import { getUserByEmail } from "../api";
 import { useDeletePostMutation } from "../../store/api/advertismentApi";
 import {
   useGetSimilarsQuery,
@@ -38,7 +37,8 @@ export default function FullAdd() {
     isSuccess: similarSuccess,
     isUninitialized: simillarUnitialized,
   } = useGetSimilarsQuery(similarParams, {
-    skip: !similarParams.catId, // Ensure proper skipping logic
+    skip: !similarParams.catId,
+    refetchOnFocus: false,
   });
 
   const token = localStorage.getItem("authToken") ?? "";
@@ -49,27 +49,29 @@ export default function FullAdd() {
     data: userData,
     isFetching: userFetching,
     isSuccess: userSuccess,
-
     isError: userError,
   } = useGetUserQuery(email);
 
   // Update similarParams only when add changes
-  const isPageFetched = addSuccess && similarSuccess && userSuccess;
-  const isPageFound = !addError && !similarsError && !userError;
-
   useEffect(() => {
-    // return () => {
     if (add && add.category && add.price && add.id) {
-      console.log(addSuccess);
-      setSimilarParams({
+      const newSimilarParams = {
         catId: add.category.category_id,
         price: add.price,
         addId: add.id,
-      });
+      };
+
+      // Only update if params have changed
+      if (
+        newSimilarParams.catId !== similarParams.catId ||
+        newSimilarParams.price !== similarParams.price ||
+        newSimilarParams.addId !== similarParams.addId
+      ) {
+        setSimilarParams(newSimilarParams);
+      }
     }
     setMessage(location.state);
-    // };
-  }, [addSuccess]);
+  }, [add]);
 
   const handleDelete = async () => {
     try {
@@ -96,6 +98,9 @@ export default function FullAdd() {
   };
 
   const base64ToUrl = (base64) => `data:image/jpeg;base64,${base64}`;
+
+  const isPageFetched = addSuccess && similarSuccess && userSuccess;
+  const isPageFound = !addError && !similarsError && !userError;
 
   return (
     <main>
