@@ -25,28 +25,30 @@ const ImagesInput = ({ props }) => {
           <i className="fas fa-plus"></i>
           <img className="rec_icon" src={imageIconPath} alt="Addy" />
         </label>
-        <div className="selected-images">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className="img-ctn"
-              onClick={() => handleImageDelete(image)}
-            >
-              <img
-                className="img"
-                src={image.src ?? URL.createObjectURL(image)}
-                alt={`Image ${index + 1}`}
-              />
-              <div className="delete_overlay">
+        {images.length > 0 && (
+          <div className="selected-images">
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className="img-ctn"
+                onClick={() => handleImageDelete(image)}
+              >
                 <img
-                  className="delete_icon"
-                  src={process.env.PUBLIC_URL + "/plus-svgrepo-com (1).png"}
-                  alt="Delete"
+                  className="img"
+                  src={image.src ?? URL.createObjectURL(image)}
+                  alt={`Image ${index + 1}`}
                 />
+                <div className="delete_overlay">
+                  <img
+                    className="delete_icon"
+                    src={process.env.PUBLIC_URL + "/plus-svgrepo-com (1).png"}
+                    alt="Delete"
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
