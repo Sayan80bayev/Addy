@@ -7,7 +7,6 @@ import {
   usePostAddsMutation,
   useUpdatePostMutation,
 } from "../../store/api/advertismentApi";
-import { useDispatch } from "react-redux";
 import FormInput from "./advertisementFormComponents/FormInput";
 import { useGetCatsQuery } from "../../store/api/categoryApi";
 import { useGetByIdQuery } from "../../store/api/advertismentApi";
