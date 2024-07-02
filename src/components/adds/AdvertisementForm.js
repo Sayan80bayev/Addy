@@ -75,7 +75,9 @@ function AdvertisementForm({ isEditing }) {
     setImages(decodedFiles);
     setEmail(adResponse.email);
   };
-
+  useEffect(() => {
+    if (errorMessage) window.scrollTo(0, 0);
+  }, [errorMessage]);
   useEffect(() => {
     if (isEditing && !isAdLoading && adResponse) {
       setToFormData();
@@ -201,7 +203,7 @@ function AdvertisementForm({ isEditing }) {
             <br />
             <br />
             {isAdFetching && formData ? (
-              <>Loading</>
+              <LoadingIcon />
             ) : (
               <FormInput
                 props={{
