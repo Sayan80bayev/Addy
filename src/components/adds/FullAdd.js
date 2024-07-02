@@ -113,7 +113,7 @@ export default function FullAdd() {
       {window.history.replaceState({}, "")}
       <div className="ctn-full mb-4">
         {isPageFound ? (
-          isPageFetched ? (
+          isPageFetched && !similarsFetching ? (
             <>
               <AddInfo
                 add={add}
