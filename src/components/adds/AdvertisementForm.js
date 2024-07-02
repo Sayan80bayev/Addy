@@ -32,6 +32,7 @@ function AdvertisementForm({ isEditing }) {
       category_id: "",
     },
     isLoading: isAdLoading,
+    isFetching: isAdFetching,
   } = useGetByIdQuery(id, { skip: !isEditing });
   //note: emai field is for checking that ad's owner editinhg not someone else
   const [email, setEmail] = useState("");
@@ -195,17 +196,21 @@ function AdvertisementForm({ isEditing }) {
           <h2>{isEditing ? "Edit" : "Add New"} Advertisement</h2>
           <br />
           <br />
-          <FormInput
-            props={{
-              formData,
-              handleSubmit,
-              categories,
-              handleChange,
-              handleImageChange,
-              handleImageDelete,
-              images,
-            }}
-          />
+          {isAdFetching && formData ? (
+            <>Loading</>
+          ) : (
+            <FormInput
+              props={{
+                formData,
+                handleSubmit,
+                categories,
+                handleChange,
+                handleImageChange,
+                handleImageDelete,
+                images,
+              }}
+            />
+          )}
         </div>
       </div>
       <Footer />
