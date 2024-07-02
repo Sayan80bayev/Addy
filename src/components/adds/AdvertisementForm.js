@@ -16,13 +16,13 @@ import {
   validateFormChanges,
   validateImages,
 } from "./advertisementFormComponents/formHelpers";
-
+import LoadingIcon from "../LoadingIcon";
 function AdvertisementForm({ isEditing }) {
   const { id } = useParams();
 
   const navigate = useNavigate();
   const [postAdds] = usePostAddsMutation();
-  const [updateAdd] = useUpdatePostMutation();
+  const [updateAdd, { isLoading: isAddUpdating }] = useUpdatePostMutation();
   const { data: categories = [] } = useGetCatsQuery();
   const {
     data: adResponse = {
@@ -126,7 +126,6 @@ function AdvertisementForm({ isEditing }) {
     ) {
       return;
     }
-    console.log("hello");
 
     const formDataToSend = new FormData();
 
@@ -154,7 +153,8 @@ function AdvertisementForm({ isEditing }) {
         response = await postAdds(formDataToSend);
       }
       if (response.error) throw response.error;
-      if (isEditing && !response.error) {
+      console.log(response);
+      if (isEditing && !response.error && response.data.status === "SUCCESS") {
         navigate(`/view/${id}`, {
           state: {
             status: "success",
@@ -188,31 +188,36 @@ function AdvertisementForm({ isEditing }) {
       state: { status: "error", message: "No access!" },
     });
   }
+
   return (
     <main>
       {errorMessage && <AlertError message={errorMessage} />}
-      <div className="mb-5" style={{ display: "flex" }}>
-        <div style={{ width: "80%" }}>
-          <h2>{isEditing ? "Edit" : "Add New"} Advertisement</h2>
-          <br />
-          <br />
-          {isAdFetching && formData ? (
-            <>Loading</>
-          ) : (
-            <FormInput
-              props={{
-                formData,
-                handleSubmit,
-                categories,
-                handleChange,
-                handleImageChange,
-                handleImageDelete,
-                images,
-              }}
-            />
-          )}
+      {isAddUpdating ? (
+        <LoadingIcon />
+      ) : (
+        <div className="mb-5" style={{ display: "flex" }}>
+          <div style={{ width: "80%" }}>
+            <h2>{isEditing ? "Edit" : "Add New"} Advertisement</h2>
+            <br />
+            <br />
+            {isAdFetching && formData ? (
+              <>Loading</>
+            ) : (
+              <FormInput
+                props={{
+                  formData,
+                  handleSubmit,
+                  categories,
+                  handleChange,
+                  handleImageChange,
+                  handleImageDelete,
+                  images,
+                }}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <Footer />
     </main>
   );

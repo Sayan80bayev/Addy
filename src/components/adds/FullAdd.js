@@ -60,7 +60,7 @@ export default function FullAdd() {
   useEffect(() => {
     // return () => {
     if (add && add.category && add.price && add.id) {
-      console.log(addSuccess);
+      // console.log(addSuccess);
       setSimilarParams({
         catId: add.category.category_id,
         price: add.price,
