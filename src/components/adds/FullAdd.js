@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "../style/FullAdd.css";
 import Footer from "../Footer";
 import { jwtDecode } from "jwt-decode";
@@ -21,14 +22,18 @@ export default function FullAdd() {
   const [deletePost] = useDeletePostMutation();
   const location = useLocation();
   const { id } = useParams();
+  const baseAdds = useSelector(
+    (state) => state.advertisementApi.queries["getAdds(undefined)"]?.data || []
+  );
+  const baseAdd = baseAdds.find((ad) => ad.id == id);
+  console.log(baseAdd);
   const {
-    data: add,
+    data: fullAdd,
     error: addError,
     isFetching: addFetching,
     isSuccess: addSuccess,
   } = useGetByIdQuery(id);
 
-  const [similarParams, setSimilarParams] = useState({});
   const {
     data: similars,
     error: similarsError,
@@ -36,11 +41,17 @@ export default function FullAdd() {
     isFetching: similarsFetching,
     isSuccess: similarSuccess,
     isUninitialized: simillarUnitialized,
-  } = useGetSimilarsQuery(similarParams, {
-    skip: !similarParams.catId,
-    refetchOnFocus: false,
-  });
-
+  } = useGetSimilarsQuery(
+    {
+      addId: baseAdd.id,
+      catId: baseAdd.category.category_id,
+      price: baseAdd.price,
+    },
+    {
+      skip: !baseAdd.id,
+      refetchOnMountOrArgChange: true,
+    }
+  );
   const token = localStorage.getItem("authToken") ?? "";
   const email = jwtDecode(token).sub;
   const navigate = useNavigate();
@@ -53,25 +64,6 @@ export default function FullAdd() {
   } = useGetUserQuery(email);
 
   // Update similarParams only when add changes
-  useEffect(() => {
-    if (add && add.category && add.price && add.id) {
-      const newSimilarParams = {
-        catId: add.category.category_id,
-        price: add.price,
-        addId: add.id,
-      };
-
-      // Only update if params have changed
-      if (
-        newSimilarParams.catId !== similarParams.catId ||
-        newSimilarParams.price !== similarParams.price ||
-        newSimilarParams.addId !== similarParams.addId
-      ) {
-        setSimilarParams(newSimilarParams);
-      }
-    }
-    setMessage(location.state);
-  }, [add]);
 
   const handleDelete = async () => {
     try {
@@ -96,7 +88,15 @@ export default function FullAdd() {
       </div>
     );
   };
-
+  useEffect(() => {
+    if (message) {
+      const newState = { ...location.state };
+      delete newState.message;
+      delete newState.status;
+      window.history.replaceState(newState, "");
+    }
+    console.log(location.state);
+  }, [message, location.state]);
   const base64ToUrl = (base64) => `data:image/jpeg;base64,${base64}`;
 
   const isPageFetched = addSuccess && similarSuccess && userSuccess;
@@ -110,18 +110,24 @@ export default function FullAdd() {
         ) : (
           <AlertError message={message.message} />
         ))}
-      {window.history.replaceState({}, "")}
       <div className="ctn-full mb-4">
         {isPageFound ? (
           isPageFetched && !similarsFetching ? (
             <>
               <AddInfo
-                add={add}
+                add={fullAdd}
                 base64ToUrl={base64ToUrl}
                 renderCategories={renderCategories}
               />
               <AdditionaInfo
-                props={{ userData, add, similars, email, handleDelete, id }}
+                props={{
+                  userData,
+                  add: fullAdd,
+                  similars,
+                  email,
+                  handleDelete,
+                  id,
+                }}
               />
             </>
           ) : (

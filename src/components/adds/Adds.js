@@ -66,6 +66,13 @@ export default function Adds({ advertisements }) {
                 <h5 key={advertisement.id}>
                   <Link
                     to={"/view/" + advertisement.id}
+                    state={{
+                      similarParams: {
+                        addId: advertisement.id,
+                        price: advertisement.price,
+                        catId: advertisement.category.category_id,
+                      },
+                    }}
                     className="link_to_full"
                   >
                     {advertisement.title}

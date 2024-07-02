@@ -34,6 +34,13 @@ const SimilarsSection = ({ similars, add }) => {
               <Link
                 to={ad ? "/view/" + ad.id : "#"}
                 style={{ fontWeight: "bold" }}
+                state={{
+                  similarParams: {
+                    addId: ad.id,
+                    price: ad.price,
+                    catId: ad.category.category_id,
+                  },
+                }}
               >
                 {ad ? ad.title : "Title Not Available"}
               </Link>
