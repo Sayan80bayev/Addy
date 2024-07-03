@@ -22,7 +22,7 @@ export default function FullAdd() {
   const [deletePost] = useDeletePostMutation();
   const location = useLocation();
   const { id } = useParams();
-  const similarParams = location.state.similarParams;
+  const similarParams = location.state?.similarParams;
   const {
     data: fullAdd,
     error: addError,
@@ -38,7 +38,7 @@ export default function FullAdd() {
     isSuccess: similarSuccess,
     isUninitialized: similarUninitialized,
   } = useGetSimilarsQuery(similarParams, {
-    skip: !similarParams.addId,
+    skip: !similarParams,
   });
 
   const token = localStorage.getItem("authToken") ?? "";
