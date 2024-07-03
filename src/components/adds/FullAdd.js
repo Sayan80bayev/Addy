@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import {
   useDeletePostMutation,

@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { fetchNotifications } from "./api";
 import { simplifyTimestamp } from "./adds/utils";
 import { seenNotifications } from "./api";
+import { Link } from "react-router-dom";
 const Header = () => {
   const [authorities, setAuthorities] = useState(null);
   const [token, setToken] = useState(null);
@@ -89,7 +90,7 @@ const Header = () => {
             </button>
             <div className="navigation">
               <a href="/">My Website</a>
-              <a href="/index">Home</a>
+              <Link to="/index">Home</Link>
               <a href="/newAdd">New add</a>
               {authorities && <a href="/profile">Profile</a>}
               {authorities === "ADMIN" && (
