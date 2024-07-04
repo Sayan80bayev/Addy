@@ -42,6 +42,8 @@ export default function FullAdd() {
 
   const token = localStorage.getItem("authToken") ?? "";
   const email = jwtDecode(token).sub;
+  const addAuthor = location.state.email ?? ""
+  console.log(addAuthor);
   const navigate = useNavigate();
   const [message, setMessage] = useState();
 
@@ -50,7 +52,7 @@ export default function FullAdd() {
     isFetching: userFetching,
     isSuccess: userSuccess,
     isError: userError,
-  } = useGetUserQuery(email);
+  } = useGetUserQuery(addAuthor);
 
   useEffect(() => {
     if (message) {

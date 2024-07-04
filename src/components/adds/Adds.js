@@ -66,7 +66,8 @@ export default function Adds({ advertisements }) {
                 <h5 key={advertisement.id}>
                   <Link
                     to={"/view/" + advertisement.id}
-                    state={{
+                    state={{ 
+                      email: advertisement.email,
                       similarParams: {
                         addId: advertisement.id,
                         price: advertisement.price,
