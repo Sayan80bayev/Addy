@@ -572,22 +572,3 @@ a{
 .similarSectionLoader{
   padding: 0;
 }
-.cropper-modal {
-  position: fixed;
-  opacity: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.avatar-input {
-  position: relative;
-}
-
-.avatar-input img.current-avatar {
-  cursor: pointer;
-}

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
-import Cropper from "react-cropper";
-import "cropperjs/dist/cropper.css";
+import { Cropper, CircleStencil } from "react-advanced-cropper";
 import Modal from "react-modal";
 
 const AvatarInput = ({
@@ -24,16 +23,18 @@ const AvatarInput = ({
     reader.readAsDataURL(file);
   };
 
-  const handleCrop = () => {
-    const cropper = cropperRef.current.cropper;
-    const croppedDataUrl = cropper.getCroppedCanvas().toDataURL();
-    setCroppedImage(croppedDataUrl);
-    setSelectedImage(croppedDataUrl);
+  const handleCrop = async () => {
+    const cropper = cropperRef.current;
+    if (cropper) {
+      const croppedImageData = await cropper.getCanvas()?.toDataURL();
+      if (croppedImageData) {
+        setCroppedImage(croppedImageData);
+        handleImageChange(croppedImageData);
+      }
+    }
     setCropping(false);
-    handleImageChange(croppedDataUrl);
   };
 
-  // Modal styles
   const customStyles = {
     content: {
       top: "50%",
@@ -82,14 +83,17 @@ const AvatarInput = ({
         style={customStyles}
         contentLabel="Crop Image Modal"
       >
-        <Cropper
-          src={selectedImage}
-          style={{ height: 400, width: "100%" }}
-          aspectRatio={1} // Enforce a square aspect ratio for avatars
-          viewMode={2} // Show a grid overlay for easier cropping
-          ref={cropperRef}
-        />
+        {selectedImage && (
+          <Cropper
+            ref={cropperRef}
+            src={selectedImage}
+            aspectRatio={1} // Enforce a square aspect ratio
+            stencilComponent={CircleStencil} // Use CircleStencil for circular crop
+            style={{ height: 400, width: "100%" }}
+          />
+        )}
         <button onClick={handleCrop}>Crop Image</button>
+        <button onClick={() => setCropping(false)}>Cancel</button>
       </Modal>
     </div>
   );
