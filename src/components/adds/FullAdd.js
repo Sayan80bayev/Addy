@@ -9,11 +9,9 @@ import {
 } from "../../store";
 import AlertError from "../feedback/AlertError";
 import AlertSuccess from "../feedback/AlertSuccess";
-import { AddInfo } from "./fullAddComps";
-import { AdditionalInfo } from "./fullAddComps";
-import NotFound from "../feedback/NotFound";
-import { SimilarLoader } from "./fullAddComps";
 import { AddInfoLoader } from "./fullAddComps";
+import { AddInfo, AdditionalInfo, SimilarLoader } from "./fullAddComps";
+import NotFound from "../feedback/NotFound";
 import Footer from "../Footer";
 import "../style/FullAdd.css";
 
