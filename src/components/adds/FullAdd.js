@@ -9,11 +9,11 @@ import {
 } from "../../store";
 import AlertError from "../feedback/AlertError";
 import AlertSuccess from "../feedback/AlertSuccess";
-import AddInfo from "./fullAddComponents/AddInfo";
-import AdditionaInfo from "./fullAddComponents/AdditionaInfo";
+import { AddInfo } from "./fullAddComps";
+import { AdditionalInfo } from "./fullAddComps";
 import NotFound from "../feedback/NotFound";
-import SimilarLoader from "./fullAddComponents/SimilarLoader";
-import AddInfoLoader from "./fullAddComponents/AddInfoLoader";
+import { SimilarLoader } from "./fullAddComps";
+import { AddInfoLoader } from "./fullAddComps";
 import Footer from "../Footer";
 import "../style/FullAdd.css";
 
@@ -119,7 +119,7 @@ export default function FullAdd() {
                 base64ToUrl={base64ToUrl}
                 renderCategories={renderCategories}
               />
-              <AdditionaInfo
+              <AdditionalInfo
                 props={{
                   userData,
                   add: fullAdd,

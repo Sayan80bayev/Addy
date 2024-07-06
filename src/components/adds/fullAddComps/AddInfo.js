@@ -1,7 +1,8 @@
 import React from "react";
 import ImageCarousel from "./ImageCarousel";
 import OneImage from "./OneImage";
-const AddInfo = ({ add, renderCategories, base64ToUrl }) => {
+
+export const AddInfo = ({ add, renderCategories, base64ToUrl }) => {
   return (
     <div className="children">
       {add.images && add.images.length > 1 && (
@@ -50,5 +51,3 @@ const AddInfo = ({ add, renderCategories, base64ToUrl }) => {
     </div>
   );
 };
-
-export default AddInfo;

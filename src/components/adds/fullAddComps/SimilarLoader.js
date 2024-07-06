@@ -1,5 +1,5 @@
 import React from "react";
-const SimilarLoader = () => {
+export const SimilarLoader = () => {
   return (
     <div className="ctn-additional">
       <div className="skeleton skeleton-line" style={{ height: "40px" }}></div>
@@ -24,5 +24,3 @@ const SimilarLoader = () => {
     </div>
   );
 };
-
-export default SimilarLoader;

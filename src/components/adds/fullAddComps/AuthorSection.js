@@ -62,5 +62,4 @@ const AuthorSection = ({ props }) => {
     </div>
   );
 };
-
 export default AuthorSection;

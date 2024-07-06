@@ -1,6 +1,5 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
-
 const ImageCarousel = ({ add, base64ToUrl }) => {
   return (
     <Carousel className="mb-3">
@@ -16,5 +15,4 @@ const ImageCarousel = ({ add, base64ToUrl }) => {
     </Carousel>
   );
 };
-
 export default ImageCarousel;

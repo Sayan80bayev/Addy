@@ -1,7 +1,7 @@
 import React from "react";
 import AuthorSection from "./AuthorSection";
 import SimilarsSection from "./SimilarsSection";
-const AdditionaInfo = ({ props }) => {
+export const AdditionalInfo = ({ props }) => {
   const { userData, add, similars, email, handleDelete, id } = props;
   return (
     <div className="ctn-additional">
@@ -12,5 +12,3 @@ const AdditionaInfo = ({ props }) => {
     </div>
   );
 };
-
-export default AdditionaInfo;

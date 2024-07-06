@@ -1,6 +1,6 @@
 import React from "react";
 
-const AddInfoLoader = () => {
+export const AddInfoLoader = () => {
   return (
     <div className="children">
       <div className="skeleton skeleton-line" style={{ height: "400px" }}></div>
@@ -16,5 +16,3 @@ const AddInfoLoader = () => {
     </div>
   );
 };
-
-export default AddInfoLoader;
