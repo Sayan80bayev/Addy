@@ -2,12 +2,14 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./auth/Login";
 import Registration from "./auth/Registration";
-import AdvertisementList from "./adds/AdvertisementList";
-import ByCategory from "./adds/ByCategory";
-import Home from "./Home";
 import FullAdd from "./adds/FullAdd";
-import SearchAd from "./adds/SearchAd";
-import SimilarAdds from "./adds/SimilarAdds";
+import {
+  AdvertisementListByName,
+  AdvertisementListByCat,
+  AdvertisementListSorted,
+  SimilarAdds,
+} from "./adds/AddList";
+import Home from "./Home";
 import AdvertisementForm from "./adds/AdvertisementForm";
 import Template from "./Template";
 import CategoryControll from "./admin/CategoryControll";
@@ -52,15 +54,15 @@ export default function App() {
           children: [
             {
               path: "/index",
-              element: <AdvertisementList />,
+              element: <AdvertisementListSorted />,
             },
             {
               path: "/index/cat/:id",
-              element: <ByCategory />,
+              element: <AdvertisementListByCat />,
             },
             {
               path: "/index/search/:name",
-              element: <SearchAd />,
+              element: <AdvertisementListByName />,
             },
             {
               path: "/index/similars/:id/:cat_id/:price",

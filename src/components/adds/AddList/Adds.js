@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import { subscribe, unsubscribe } from "../api";
 import { jwtDecode } from "jwt-decode";
-import { simplifyTimestamp } from "./utils"; // Separate utility functions
-import BellButton from "./BellButton";
+import { simplifyTimestamp } from "../utils"; // Separate utility functions
+import BellButton from "../BellButton";
 import {
   useCreateSubMutation,
   useGetSubsQuery,
   useDeleteSubMutation,
-} from "../../store";
+} from "../../../store";
 
 export default function Adds({ advertisements }) {
   const { data: activeSubscriptions = [] } = useGetSubsQuery();
@@ -66,7 +64,7 @@ export default function Adds({ advertisements }) {
                 <h5 key={advertisement.id}>
                   <Link
                     to={"/view/" + advertisement.id}
-                    state={{ 
+                    state={{
                       email: advertisement.email,
                       similarParams: {
                         addId: advertisement.id,
