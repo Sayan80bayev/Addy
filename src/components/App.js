@@ -10,7 +10,7 @@ import {
   SimilarAdds,
 } from "./adds/AddList";
 import Home from "./Home";
-import AdvertisementForm from "./adds/AdvertisementForm";
+import { AdvertisementForm } from "./adds/AddForm";
 import Template from "./Template";
 import CategoryControll from "./admin/CategoryControll";
 import Profile from "./auth/Profile";

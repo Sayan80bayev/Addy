@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "../style/AddForms.css";
-import Footer from "../Footer";
+import "./AddForms.css";
+import Footer from "../../Footer";
 import { jwtDecode } from "jwt-decode";
 import {
   usePostAddsMutation,
   useUpdatePostMutation,
-} from "../../store/api/advertismentApi";
-import FormInput from "./advertisementFormComponents/FormInput";
-import { useGetCatsQuery } from "../../store/api/categoryApi";
-import { useGetByIdQuery } from "../../store/api/advertismentApi";
-import AlertError from "../feedback/AlertError";
-import {
-  validateFormChanges,
-  validateImages,
-} from "./advertisementFormComponents/formHelpers";
-import LoadingIcon from "../LoadingIcon";
-function AdvertisementForm({ isEditing }) {
+} from "../../../store/api/advertismentApi";
+import FormInput from "./FormInput";
+import { useGetCatsQuery } from "../../../store/api/categoryApi";
+import { useGetByIdQuery } from "../../../store/api/advertismentApi";
+import AlertError from "../../feedback/AlertError";
+import { validateFormChanges, validateImages } from "./formHelpers";
+import LoadingIcon from "../../LoadingIcon";
+
+export const AdvertisementForm = ({ isEditing }) => {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -226,6 +224,4 @@ function AdvertisementForm({ isEditing }) {
       <Footer />
     </main>
   );
-}
-
-export default AdvertisementForm;
+};
