@@ -103,6 +103,7 @@ export const AdvertisementForm = ({ isEditing }) => {
       );
       console.error("Invalid image format. Please select JPEG or PNG images.");
     }
+    e.target.value = null;
   };
 
   const handleImageDelete = (deletedImage) => {
