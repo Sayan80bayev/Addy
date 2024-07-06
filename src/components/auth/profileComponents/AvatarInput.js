@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Cropper, CircleStencil } from "react-advanced-cropper";
 import Modal from "react-modal";
+import ReactModal from "react-modal";
+ReactModal.defaultStyles.overlay.backgroundColor = "rgba(54, 54, 50, 0.75)";
 
 const AvatarInput = ({
   handleImageChange,
@@ -43,6 +45,9 @@ const AvatarInput = ({
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
+      backgroundColor: "rgb(40, 40, 40)",
+      border: "none",
+      // width: "50%",
     },
   };
 
@@ -79,7 +84,7 @@ const AvatarInput = ({
 
       <Modal
         isOpen={cropping}
-        onRequestClose={() => setCropping(false)}
+        // onRequestClose={() => setCropping(false)}
         style={customStyles}
         contentLabel="Crop Image Modal"
       >
@@ -90,10 +95,23 @@ const AvatarInput = ({
             aspectRatio={1} // Enforce a square aspect ratio
             stencilComponent={CircleStencil} // Use CircleStencil for circular crop
             style={{ height: 400, width: "100%" }}
+            overlayClassName="Overlay"
           />
         )}
-        <button onClick={handleCrop}>Crop Image</button>
-        <button onClick={() => setCropping(false)}>Cancel</button>
+        <div className="ctn-actions mb-4 mt-4">
+          <button
+            onClick={handleCrop}
+            className="mr-3 btn btn-danger btn-custom"
+          >
+            Crop Image
+          </button>
+          <button
+            onClick={() => setCropping(false)}
+            className="btn btn-danger btn-custom"
+          >
+            Cancel
+          </button>
+        </div>
       </Modal>
     </div>
   );
