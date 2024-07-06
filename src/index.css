@@ -572,3 +572,7 @@ a{
 .similarSectionLoader{
   padding: 0;
 }
+.Overlay{
+  background-color: rgba(54, 54, 50, 0.75);
+}
+

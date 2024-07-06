@@ -1,15 +1,3 @@
-export const imageChangeHelper = ({ event, setImageUrl, setAvatarUpdated }) => {
-  if (event.target.files.length > 0) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    setAvatarUpdated(true);
-    reader.onload = (e) => {
-      setImageUrl(e.target.result);
-      console.log(e.target.result);
-    };
-    reader.readAsDataURL(file);
-  }
-};
 export const validateNewPasswordHelper = ({ formData, setMessage }) => {
   const { password, newPassword, confirmPassword } = formData;
 
