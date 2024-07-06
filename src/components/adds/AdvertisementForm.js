@@ -158,15 +158,19 @@ function AdvertisementForm({ isEditing }) {
       if (isEditing && !response.error && response.data.status === "SUCCESS") {
         navigate(`/view/${id}`, {
           state: {
-            status: "success",
-            message: "Advertisement saved successfully",
+            message: {
+              status: "success",
+              message: "Advertisement saved successfully",
+            },
           },
         });
       } else if (!response.error) {
         navigate("/index", {
           state: {
-            status: "success",
-            message: "Advertisement saved successfully",
+            message: {
+              status: "success",
+              message: "Advertisement saved successfully",
+            },
           },
         });
       }

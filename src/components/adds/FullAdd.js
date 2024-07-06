@@ -21,7 +21,9 @@ export default function FullAdd() {
   const [deletePost] = useDeletePostMutation();
   const location = useLocation();
   const { id } = useParams();
-  const similarParams = location.state?.similarParams;
+  const [similarParams, setSimilarParams] = useState(
+    location.state?.similarParams
+  );
   const {
     data: fullAdd,
     error: addError,
@@ -42,10 +44,9 @@ export default function FullAdd() {
 
   const token = localStorage.getItem("authToken") ?? "";
   const email = jwtDecode(token).sub;
-  const addAuthor = location.state.email ?? ""
-  console.log(addAuthor);
+  const [addAuthor, setAddAuthor] = useState(location.state?.email);
   const navigate = useNavigate();
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState(location.state?.message);
 
   const {
     data: userData,
@@ -64,7 +65,16 @@ export default function FullAdd() {
   }, [message, location.state]);
 
   const base64ToUrl = (base64) => `data:image/jpeg;base64,${base64}`;
-
+  useEffect(() => {
+    if (fullAdd && !similarParams) {
+      setSimilarParams({
+        addId: fullAdd.id,
+        catId: fullAdd.category.category_id,
+        price: fullAdd.price,
+      });
+      setAddAuthor(fullAdd.email);
+    }
+  }, [fullAdd]);
   const renderCategories = (category) => {
     return (
       <div style={{ display: "flex", gap: "15px" }}>
