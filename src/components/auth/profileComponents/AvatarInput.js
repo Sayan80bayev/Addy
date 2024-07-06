@@ -23,6 +23,7 @@ const AvatarInput = ({
       setCropping(true);
     };
     reader.readAsDataURL(file);
+    e.target.value = null;
   };
 
   const handleCrop = async () => {
