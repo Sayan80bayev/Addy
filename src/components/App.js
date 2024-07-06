@@ -2,7 +2,7 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./auth/Login";
 import Registration from "./auth/Registration";
-import FullAdd from "./adds/FullAdd";
+import { FullAdd } from "./adds/FullAdd";
 import {
   AdvertisementListByName,
   AdvertisementListByCat,

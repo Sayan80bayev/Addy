@@ -6,16 +6,16 @@ import {
   useGetSimilarsQuery,
   useGetByIdQuery,
   useGetUserQuery,
-} from "../../store";
-import AlertError from "../feedback/AlertError";
-import AlertSuccess from "../feedback/AlertSuccess";
-import { AddInfoLoader } from "./fullAddComps";
-import { AddInfo, AdditionalInfo, SimilarLoader } from "./fullAddComps";
-import NotFound from "../feedback/NotFound";
-import Footer from "../Footer";
-import "../style/FullAdd.css";
+} from "../../../store";
+import AlertError from "../../feedback/AlertError";
+import AlertSuccess from "../../feedback/AlertSuccess";
+import { AddInfoLoader } from ".";
+import { AddInfo, AdditionalInfo, SimilarLoader } from ".";
+import NotFound from "../../feedback/NotFound";
+import Footer from "../../Footer";
+import "../../style/FullAdd.css";
 
-export default function FullAdd() {
+export const FullAdd = () => {
   const [deletePost] = useDeletePostMutation();
   const location = useLocation();
   const { id } = useParams();
@@ -141,4 +141,4 @@ export default function FullAdd() {
       <Footer />
     </main>
   );
-}
+};
