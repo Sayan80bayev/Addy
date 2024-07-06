@@ -42,8 +42,9 @@ const Profile = () => {
     setImageUrl(user.avatar);
   }, [token, user]);
 
-  const handleImageChange = (event) => {
-    imageChangeHelper({ event, setImageUrl, setAvatarUpdated });
+  const handleImageChange = (imageDataUrl) => {
+    setAvatarUpdated(true);
+    setImageUrl(imageDataUrl);
   };
 
   const handleClick = () => {
