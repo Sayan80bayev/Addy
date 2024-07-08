@@ -71,13 +71,17 @@ const ImagesInput = ({ props }) => {
                       draggableId={String(index)}
                       index={index}
                     >
-                      {(provided) => (
+                      {(provided, snapshot) => (
                         <div
                           className="img-ctn"
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           onClick={() => handleImageDelete(image)}
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity: snapshot.isDragging ? 0.6 : 1,
+                          }}
                         >
                           <img
                             className="img"
