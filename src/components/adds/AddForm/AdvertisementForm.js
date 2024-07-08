@@ -166,10 +166,8 @@ export const AdvertisementForm = ({ isEditing }) => {
       } else if (!response.error) {
         navigate("/index", {
           state: {
-            message: {
-              status: "success",
-              message: "Advertisement saved successfully",
-            },
+            status: "success",
+            message: "Advertisement saved successfully",
           },
         });
       }
@@ -192,7 +190,6 @@ export const AdvertisementForm = ({ isEditing }) => {
       state: { status: "error", message: "No access!" },
     });
   }
-
   return (
     <main>
       {errorMessage && <AlertError message={errorMessage} />}
