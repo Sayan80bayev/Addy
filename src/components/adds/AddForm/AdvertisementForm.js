@@ -89,7 +89,9 @@ export const AdvertisementForm = ({ isEditing }) => {
       [name]: value,
     }));
   };
-
+  useEffect(() => {
+    setFormChanged(true);
+  }, [images]);
   const handleImageChange = (e) => {
     setFormChanged(true);
     const files = Array.from(e.target.files);
@@ -213,6 +215,7 @@ export const AdvertisementForm = ({ isEditing }) => {
                   handleImageChange,
                   handleImageDelete,
                   images,
+                  setImages,
                 }}
               />
             )}

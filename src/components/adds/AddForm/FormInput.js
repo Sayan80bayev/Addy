@@ -12,6 +12,7 @@ const FormInput = ({ props }) => {
     handleImageChange,
     images = [],
     handleImageDelete,
+    setImages,
   } = props;
 
   const imageIconPath = process.env.PUBLIC_URL + "/plus-svgrepo-com.png";
@@ -68,7 +69,13 @@ const FormInput = ({ props }) => {
         </select>
       </div>
       <ImagesInput
-        props={{ handleImageChange, handleImageDelete, images, imageIconPath }}
+        props={{
+          handleImageChange,
+          handleImageDelete,
+          images,
+          imageIconPath,
+          setImages,
+        }}
       />
       <button type="submit">Submit</button>
       <button onClick={() => navigate(-1)} className="scnd">
