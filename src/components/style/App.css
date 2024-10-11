@@ -48,7 +48,7 @@
 }
 body {
   background-color: #303030;
-  /* --s: 25vmin;
+  --s: 25vmin;
   --p: calc(var(--s) / 2);
   --c1: #ff0084;
   --c2: #33001B;
@@ -71,7 +71,7 @@ body {
     calc(var(--p) * -1) calc(var(--p) *  0);
   animation: 
     color var(--d) var(--e) infinite,
-    position var(--d) var(--e) infinite; */
+    position var(--d) var(--e) infinite;
 }
 
 @keyframes color {

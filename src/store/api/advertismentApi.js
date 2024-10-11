@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_KEY } from "../API_KEY";
 
 export const advertisementApi = createApi({
   reducerPath: "advertisementApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001",
+    baseUrl: `${API_KEY}/api/v1/advertisements`,
     prepareHeaders: (headers, { getState }) => {
       const token = localStorage.getItem("authToken");
       if (token) {
@@ -12,10 +13,12 @@ export const advertisementApi = createApi({
       return headers;
     },
   }),
+
   tagTypes: ["Advertisements"],
+
   endpoints: (build) => ({
     getAdds: build.query({
-      query: () => "/api/v1/public/getAdds",
+      query: () => "/getAll",
       providesTags: (result) =>
         result
           ? [
@@ -24,9 +27,10 @@ export const advertisementApi = createApi({
             ]
           : [{ type: "Advertisements", id: "LIST" }],
     }),
+
     getById: build.query({
       query: (id) => ({
-        url: `/api/v1/public/add/${id}`,
+        url: `/add/${id}`,
       }),
       providesTags: (result) =>
         result
@@ -36,10 +40,11 @@ export const advertisementApi = createApi({
             ]
           : [{ type: "Advertisements", id: "LIST" }],
     }),
+
     postAdds: build.mutation({
       query: (newAdd) => {
         return {
-          url: "/api/secured/create",
+          url: "/",
           method: "POST",
           body: newAdd,
         };
@@ -50,7 +55,7 @@ export const advertisementApi = createApi({
     updatePost: build.mutation({
       query: ({ updatedAdd, id }) => {
         return {
-          url: `api/secured/edit/${id}`,
+          url: `/${id}`,
           method: "PUT",
           body: updatedAdd,
         };
@@ -61,11 +66,43 @@ export const advertisementApi = createApi({
     deletePost: build.mutation({
       query: (id) => {
         return {
-          url: `api/secured/delete/${id}`,
+          url: `/${id}`,
           method: "DELETE",
         };
       },
       invalidatesTags: [{ type: "Advertisements", id: "LIST" }],
+    }),
+
+    searchByName: build.query({
+      query: (name) => {
+        return {
+          url: `/search/${name}`,
+        };
+      },
+    }),
+
+    getById: build.query({
+      query: (id) => {
+        return {
+          url: `/add/${id}`,
+        };
+      },
+    }),
+
+    getByCategory: build.query({
+      query: (id) => {
+        return {
+          url: `/category/${id}`,
+        };
+      },
+    }),
+
+    getSimilars: build.query({
+      query: (catId, price, id) => {
+        return {
+          url: `/similars?cat=${catId}&price=${price}&id=${id}`,
+        };
+      },
     }),
   }),
 });
@@ -76,4 +113,6 @@ export const {
   useUpdatePostMutation,
   useDeletePostMutation,
   useGetByIdQuery,
+  useGetSimilarsQuery,
+  useGetByCategoryQuery,
 } = advertisementApi;

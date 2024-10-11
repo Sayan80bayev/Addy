@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_KEY } from "../API_KEY";
 
 export const categoryApi = createApi({
   reduserPath: "categoryApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001",
+    baseUrl: `${API_KEY}/api/v1/categories`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("authToken");
       if (token) {
@@ -12,11 +13,13 @@ export const categoryApi = createApi({
       return headers;
     },
   }),
+
   tagTypes: ["Categories"],
+
   endpoints: (build) => ({
     getCats: build.query({
       query: () => ({
-        url: "/api/v1/public/getCats",
+        url: "/",
       }),
       providesTags: (result) =>
         result
@@ -28,15 +31,15 @@ export const categoryApi = createApi({
     }),
     addCategory: build.mutation({
       query: (category) => ({
-        url: "/api/cat/add",
+        url: "/",
         body: category,
         method: "POST",
       }),
       invalidatesTags: [{ type: "Categories", id: "LIST" }],
     }),
     addCategoryWithParent: build.mutation({
-      query: (category, parentId) => ({
-        url: `/${parentId}/subcategories`,
+      query: (category) => ({
+        url: `/subcategory`,
         body: category,
         method: "POST",
       }),
@@ -44,7 +47,7 @@ export const categoryApi = createApi({
     }),
     deleteCategory: build.mutation({
       query: (id) => ({
-        url: `/delete/${id}`,
+        url: `/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [{ type: "Categories", id: "LIST" }],

@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { jwtDecode } from "jwt-decode";
+import { API_KEY } from "../API_KEY";
+
 const token = localStorage.getItem("authToken");
 export const subscriptionApi = createApi({
   reducerPath: "subscriptionApi",
 
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/subs",
+    baseUrl: `${API_KEY}/api/v1/subs`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("authToken");
       if (token) {
