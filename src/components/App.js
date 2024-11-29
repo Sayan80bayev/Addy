@@ -52,10 +52,10 @@ export default function App() {
           path: "/index",
           element: <Home />,
           children: [
-            {
-              path: "/index",
-              element: <AdvertisementListSorted />,
-            },
+            // {
+            //   path: "/index",
+            //   element: <AdvertisementListSorted />,
+            // },
             {
               path: "/index/cat/:id",
               element: <AdvertisementListByCat />,
@@ -64,10 +64,10 @@ export default function App() {
               path: "/index/search/:name",
               element: <AdvertisementListByName />,
             },
-            {
-              path: "/index/similars/:id/:cat_id/:price",
-              element: <SimilarAdds />,
-            },
+            // {
+            //   path: "/index/similars/:id/:cat_id/:price",
+            //   element: <SimilarAdds />,
+            // },
           ],
         },
       ],
