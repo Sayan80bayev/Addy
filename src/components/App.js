@@ -4,9 +4,9 @@ import Login from "./auth/Login";
 import Registration from "./auth/Registration";
 import { FullAdd } from "./adds/FullAdd";
 import {
-  AdvertisementListByName,
-  AdvertisementListByCat,
-  AdvertisementListSorted,
+  // AdvertisementListByName,
+  // AdvertisementListByCat,
+  AdvertisementList,
   SimilarAdds,
 } from "./adds/AddList";
 import Home from "./Home";
@@ -52,18 +52,18 @@ export default function App() {
           path: "/index",
           element: <Home />,
           children: [
+            {
+              path: "/index",
+              element: <AdvertisementList />,
+            },
             // {
-            //   path: "/index",
-            //   element: <AdvertisementListSorted />,
+            //   path: "/index/cat/:id",
+            //   element: <AdvertisementListByCat />,
             // },
-            {
-              path: "/index/cat/:id",
-              element: <AdvertisementListByCat />,
-            },
-            {
-              path: "/index/search/:name",
-              element: <AdvertisementListByName />,
-            },
+            // {
+            //   path: "/index/search/:name",
+            //   element: <AdvertisementListByName />,
+            // },
             // {
             //   path: "/index/similars/:id/:cat_id/:price",
             //   element: <SimilarAdds />,

@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_KEY } from "../API_KEY";
 
 export const categoryApi = createApi({
+
   reduserPath: "categoryApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_KEY}/api/v1/categories`,
@@ -19,7 +20,7 @@ export const categoryApi = createApi({
   endpoints: (build) => ({
     getCats: build.query({
       query: () => ({
-        url: "/",
+        url: "",
       }),
       providesTags: (result) =>
         result
@@ -37,6 +38,7 @@ export const categoryApi = createApi({
       }),
       invalidatesTags: [{ type: "Categories", id: "LIST" }],
     }),
+
     addCategoryWithParent: build.mutation({
       query: (category) => ({
         url: `/subcategory`,
@@ -45,6 +47,7 @@ export const categoryApi = createApi({
       }),
       invalidatesTags: [{ type: "Categories", id: "LIST" }],
     }),
+    
     deleteCategory: build.mutation({
       query: (id) => ({
         url: `/${id}`,

@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { API_KEY } from "../API_KEY";
 
 const token = localStorage.getItem("authToken");
+
 export const subscriptionApi = createApi({
   reducerPath: "subscriptionApi",
 

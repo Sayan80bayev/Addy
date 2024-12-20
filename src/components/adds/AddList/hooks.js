@@ -22,6 +22,12 @@ export const useAdvertisementsByName = () => {
   // return { advertisements, isFetching };
 };
 
+export const useAdvertisements = () => {
+  const {data : advertisements = [], isFetching} = useGetAddsQuery()
+  console.log(advertisements);
+  
+  return { advertisements, isFetching}
+}
 
 export const useSimilarAdvertisements = () => {
   const { id, cat_id, price } = useParams();

@@ -18,7 +18,7 @@ export const advertisementApi = createApi({
 
   endpoints: (build) => ({
     getAdds: build.query({
-      query: () => "/getAll",
+      query: () => "",
       providesTags: (result) =>
         result
           ? [

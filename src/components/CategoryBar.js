@@ -1,23 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchCategories } from "./api";
-import { useEffect } from "react";
+import { useGetCatsQuery } from "../store/api/categoryApi";
+
 
 function CategoryBar() {
-  const [categories, setCategories] = useState([]);
+  const {data: categories = []} = useGetCatsQuery();
   const [activeCategoryId, setActiveCategoryId] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchCategories();
-        setCategories(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
 
   return (
     <div className="category_ctn" style={{ padding: "10px", display: "flex" }}>
@@ -28,21 +16,21 @@ function CategoryBar() {
       </div>
       {categories.map((category) => (
         <div
-          key={category.category_id}
+          key={category.categoryId}
           className="category"
           style={{ flex: "1", textAlign: "center" }}
         >
           <Link
-            to={`/index/cat/${category.category_id}`}
-            onClick={() => setActiveCategoryId(category.category_id)}
+            to={`/index/cat/${category.categoryId}`}
+            onClick={() => setActiveCategoryId(category.categoryId)}
             style={{
               color:
-                activeCategoryId === category.category_id
+                activeCategoryId === category.categoryId
                   ? "#FF0083"
                   : "inherit",
             }}
           >
-            {category.category_name}
+            {category.categoryName}
           </Link>
         </div>
       ))}
