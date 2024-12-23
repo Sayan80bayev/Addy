@@ -41,7 +41,7 @@ export default function Registration() {
 
     try {
       const response = await axios.post(
-        "https://addy-backend.fly.dev/api/v1/auth/register",
+        "http://localhost:8080/api/v1/auth/register",
         user
       );
       setMessage({
