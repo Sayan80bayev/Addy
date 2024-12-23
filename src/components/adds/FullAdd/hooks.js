@@ -66,8 +66,6 @@ export const useFullAdd = (id) => {
   
   useEffect(() => {
     if (fullAdd) {
-      console.log("Full Add:", fullAdd);
-      console.log("Category ID:", fullAdd.category?.categoryId || fullAdd.category?.category_id);
   
       setSimilarParams({
         addId: fullAdd.id,

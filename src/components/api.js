@@ -25,16 +25,16 @@ export const fetchAdvertisementsWithSort = async (sortCriteria) => {
   }
 };
 
-export const fetchAddById = async (id) => {
-  try {
-    const result = await axios.get(
-      "http://localhost:3001/api/v1/public/add/" + id
-    );
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
+// export const fetchAddById = async (id) => {
+//   try {
+//     const result = await axios.get(
+//       "http://localhost:3001/api/v1/public/add/" + id
+//     );
+//     return result;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const fetchAdvertisementsByCat = async (id) => {
   try {

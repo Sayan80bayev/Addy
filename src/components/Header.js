@@ -33,7 +33,7 @@ const Header = () => {
       }
     };
 
-    fetchNotes(); // Fetch notes immediately when the component mounts
+ // Fetch notes immediately when the component mounts
   }, [showNotifications]);
 
   const handleLogout = () => {

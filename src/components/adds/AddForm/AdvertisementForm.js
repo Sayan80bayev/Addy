@@ -170,15 +170,19 @@ export const AdvertisementForm = ({ isEditing }) => {
         response = await updateAdd({ updatedAdd: formDataToSend, id });
       } else {
         response = await postAdds(formDataToSend);
-      }
+      }      
+
       if (response.error) throw response.error;
 
       navigate(isEditing ? `/view/${id}` : "/index", {
         state: {
-          status: "success",
-          message: "Advertisement saved successfully",
+          message : {
+            status: "success",
+            message: "Advertisement saved successfully",
+          }
         },
       });
+
     } catch (error) {
       setErrorMessage("Failed to save advertisement");
     }

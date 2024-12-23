@@ -9,6 +9,8 @@ import NotFound from "../../feedback/NotFound";
 import Footer from "../../Footer";
 import "../../style/FullAdd.css";
 import { useFullAdd } from "./hooks";
+
+
 export const FullAdd = () => {
   const { id } = useParams();
   const {
@@ -36,7 +38,7 @@ export const FullAdd = () => {
     );
   };
 
-  console.log(isPageFetched);
+  console.log(message);
   
 
   return (
