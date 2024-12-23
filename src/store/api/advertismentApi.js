@@ -44,7 +44,7 @@ export const advertisementApi = createApi({
     postAdds: build.mutation({
       query: (newAdd) => {
         return {
-          url: "/",
+          url: "",
           method: "POST",
           body: newAdd,
         };

@@ -55,15 +55,15 @@ const FormInput = ({ props }) => {
           <label htmlFor="category">Category*</label>
         </h6>
         <select
-          name="category_id"
+          name="categoryId"
           className="form-select"
-          value={formData.category_id}
+          value={formData.categoryId}
           onChange={handleChange}
         >
           <option value="">Select Category</option> // Added value attribute
           {categories.map((category) => (
-            <option key={category.category_id} value={category.category_id}>
-              {category.category_name}
+            <option key={category.categoryId} value={category.categoryId}>
+              {category.categoryName}
             </option>
           ))}
         </select>
