@@ -81,7 +81,7 @@ export const useFullAdd = (id) => {
 
   const handleDelete = async () => {
     try {
-      await deletePost(id).unwrap();
+      await deletePost(id);
       navigate("/index", {
         state: { status: "success", message: "Successfully deleted" },
       });

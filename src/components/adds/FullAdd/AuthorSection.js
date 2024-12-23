@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 const AuthorSection = ({ props }) => {
   const { add, email, userData, id, handleDelete } = props;
   if (!add) return;
+  
   return (
     <div className="ctn-p-profile">
       <h5>
