@@ -22,12 +22,11 @@ export const useAdvertisementsByName = () => {
   // return { advertisements, isFetching };
 };
 
-export const useAdvertisements = () => {
-  const {data : advertisements = [], isFetching} = useGetAddsQuery()
-  console.log(advertisements);
-  
-  return { advertisements, isFetching}
-}
+// Fixing the hook to use query parameters instead of body
+export const useAdvertisements = (filter) => {
+  const { data: advertisements = [], isFetching, refetch } = useGetAddsQuery(filter);
+  return { advertisements, isFetching, refetch };
+};
 
 export const useSimilarAdvertisements = () => {
   const { id, cat_id, price } = useParams();
