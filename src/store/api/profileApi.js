@@ -18,7 +18,7 @@ export const profileApi = createApi({
   endpoints: (build) => ({
     getUser: build.query({
       query: (email) => ({
-        url: "/?email=" + email,
+        url: "?email=" + email,
       }),
       providesTags: (result) =>
         result

@@ -19,7 +19,7 @@ export default function Adds({ advertisements = [] }) {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    if (token) {
+    if (token != null) {
       setEmail(jwtDecode(token)?.sub ?? "");
       setToken(token);
     }
@@ -51,9 +51,9 @@ export default function Adds({ advertisements = [] }) {
         return (
           <div key={advertisement.id} className="card-ctn">
             <div className="card add">
-              {advertisement.images?.length > 0 ? (
+              {advertisement.imagesUrl?.length > 0 ? (
                 <img
-                  src={`data:image/jpeg;base64,${advertisement.images[0].imageData}`}
+                  src={advertisement.imagesUrl[0]}
                   alt="First Image"
                 />
               ) : (
@@ -90,7 +90,7 @@ export default function Adds({ advertisements = [] }) {
                 <p className="price">
                   <b>{advertisement.price}</b>
                 </p>
-                <p>{advertisement.category?.category_name ?? "Unknown Category"}</p>
+                <p>{advertisement.category?.categoryName ?? "Unknown Category"}</p>
                 <p style={{ display: "flex", justifyContent: "space-between" }}>
                   <small>{simplifyTimestamp(advertisement.date)}</small>
                   <div className="views">

@@ -14,6 +14,7 @@ export const useFullAdd = (id) => {
   const [similarParams, setSimilarParams] = useState(
     location.state?.similarParams
   );
+
   const {
     data: fullAdd,
     error: addError,
@@ -21,19 +22,28 @@ export const useFullAdd = (id) => {
     isSuccess: addSuccess,
   } = useGetByIdQuery(id);
 
-  const {
-    data: similars,
-    error: similarsError,
-    isLoading: similarsLoading,
-    isFetching: similarsFetching,
-    isSuccess: similarSuccess,
-    isUninitialized: similarUninitialized,
-  } = useGetSimilarsQuery(similarParams, {
-    skip: !similarParams,
-  });
+  // const {
+  //   data: similars,
+  //   error: similarsError,
+  //   isLoading: similarsLoading,
+  //   isFetching: similarsFetching,
+  //   isSuccess: similarSuccess,
+  //   isUninitialized: similarUninitialized,
+  // } = useGetSimilarsQuery(similarParams, {
+  //   skip: !similarParams
+  // });
 
   const token = localStorage.getItem("authToken") ?? "";
-  const email = jwtDecode(token).sub;
+  let email = "";
+  
+  try {
+    if (token) {
+      email = jwtDecode(token).sub;
+    }
+  } catch (error) {
+    console.error("Error decoding token:", error);
+  }  
+  
   const [addAuthor, setAddAuthor] = useState(location.state?.email);
   const navigate = useNavigate();
   const [message, setMessage] = useState(location.state?.message);
@@ -53,16 +63,22 @@ export const useFullAdd = (id) => {
       window.history.replaceState(newState, "");
     }
   }, [message, location.state]);
+  
   useEffect(() => {
     if (fullAdd) {
+      console.log("Full Add:", fullAdd);
+      console.log("Category ID:", fullAdd.category?.categoryId || fullAdd.category?.category_id);
+  
       setSimilarParams({
         addId: fullAdd.id,
-        catId: fullAdd.category.category_id,
+        catId: fullAdd.category?.categoryId || fullAdd.category?.category_id, // Handle case mismatch
         price: fullAdd.price,
       });
+  
       setAddAuthor(fullAdd.email);
     }
   }, [fullAdd]);
+
   const handleDelete = async () => {
     try {
       await deletePost(id).unwrap();
@@ -75,18 +91,18 @@ export const useFullAdd = (id) => {
       });
     }
   };
-  const isPageFetched = addSuccess && similarSuccess && userSuccess;
-  const isPageFound = !addError && !similarsError && !userError;
+  const isPageFetched = addSuccess && userSuccess;
+  const isPageFound = !addError && !userError;
 
   return {
     fullAdd,
-    similars,
+    // similars,
     isPageFetched,
     isPageFound,
     handleDelete,
     message,
     email,
-    similarsFetching,
+    // similarsFetching,
     userData,
   };
 };

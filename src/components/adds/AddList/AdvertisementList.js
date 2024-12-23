@@ -9,7 +9,6 @@ export const AdvertisementList = () => {
   const { advertisements, isFetching } =
     useAdvertisements();
 
-  console.log(advertisements);
   
   return (
     <>

@@ -98,9 +98,11 @@ export const advertisementApi = createApi({
     }),
 
     getSimilars: build.query({
-      query: (catId, price, id) => {
+      query: (params) => {
+        console.log(params.cat, params.price, params.id);
+        
         return {
-          url: `/similars?cat=${catId}&price=${price}&id=${id}`,
+          url: `/similars?cat=${params.catId}&price=${params.price}&id=${params.addId}`,
         };
       },
     }),

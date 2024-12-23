@@ -5,7 +5,7 @@ const OneImage = ({ add, base64ToUrl }) => {
     <div className="img">
       <img
         className="add_img"
-        src={base64ToUrl(add.images[0].imageData)}
+        src={add.imagesUrl[0]}
         alt="Contact"
       />
     </div>

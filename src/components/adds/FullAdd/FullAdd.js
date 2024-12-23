@@ -13,13 +13,13 @@ export const FullAdd = () => {
   const { id } = useParams();
   const {
     fullAdd,
-    similars,
+    // similars,
     handleDelete,
     isPageFetched,
     isPageFound,
     message,
     email,
-    similarsFetching,
+    // similarsFetching,
     userData,
   } = useFullAdd(id);
 
@@ -29,12 +29,15 @@ export const FullAdd = () => {
     return (
       <div style={{ display: "flex", gap: "15px" }}>
         {category.parent && renderCategories(category.parent)}
-        <p className="category mt-2" key={category.category_id}>
-          {category.category_name}
+        <p className="category mt-2" key={category.categoryId}>
+          {category.categoryName}
         </p>
       </div>
     );
   };
+
+  console.log(isPageFetched);
+  
 
   return (
     <main>
@@ -46,7 +49,7 @@ export const FullAdd = () => {
         ))}
       <div className="ctn-full mb-4">
         {isPageFound ? (
-          isPageFetched && !similarsFetching ? (
+          isPageFetched ? (
             <>
               <AddInfo
                 add={fullAdd}
@@ -57,7 +60,7 @@ export const FullAdd = () => {
                 props={{
                   userData,
                   add: fullAdd,
-                  similars,
+                  // similars,
                   email,
                   handleDelete,
                   id,

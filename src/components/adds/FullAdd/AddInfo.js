@@ -3,15 +3,19 @@ import ImageCarousel from "./ImageCarousel";
 import OneImage from "./OneImage";
 
 export const AddInfo = ({ add, renderCategories, base64ToUrl }) => {
+
+  console.log(add.imagesUrl[0]);
+  
+
   return (
     <div className="children">
-      {add.images && add.images.length > 1 && (
+      {add.imagesUrl && add.imagesUrl.length > 1 && (
         <ImageCarousel add={add} base64ToUrl={base64ToUrl} />
       )}
-      {add.images && add.images.length == 1 && (
+      {add.imagesUrl && add.imagesUrl.length == 1 && (
         <OneImage add={add} base64ToUrl={base64ToUrl} />
       )}
-      {add.images && add.images.length === 0 && (
+      {add.imagesUrl && add.imagesUrl.length === 0 && (
         <div className="img">
           <img
             className="add_img"
