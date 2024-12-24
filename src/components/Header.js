@@ -92,7 +92,7 @@ const Header = () => {
               <a href="/">My Website</a>
               <Link to="/index">Home</Link>
               <a href="/newAdd">New add</a>
-              {authorities && <a href="/profile">Profile</a>}
+
               {authorities === "ADMIN" && (
                 <a href="/catControll">Controll categories</a>
               )}
