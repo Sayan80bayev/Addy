@@ -81,11 +81,11 @@ export const useFullAdd = (id) => {
     try {
       await deletePost(id);
       navigate("/index", {
-        state: { status: "success", message: "Successfully deleted" },
+        state: { message: {status: "success", message: "Successfully deleted"} },
       });
     } catch (error) {
       navigate("/index", {
-        state: { status: "error", message: "Couldn't delete" },
+        state: {message : { status: "error", message: "Couldn't delete" }},
       });
     }
   };

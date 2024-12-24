@@ -8,13 +8,20 @@ import { useState } from "react";
 
 export default function Home() {
   const location = useLocation();
-  const [message, setMessage] = useState(location.state);
+  const [message, setMessage] = useState(location?.state?.message || null);
+
+  useEffect(() => {
+    // Clear the history state after setting the message
+    window.history.replaceState({}, "");
+  }, []);
+  
 
   return (
     <>
       <h1 className="name_of_comp">
         Addy <h2>Buy anything you can find!</h2>
       </h1>
+
 
       <main>
         {message &&
