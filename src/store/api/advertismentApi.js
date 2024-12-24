@@ -119,6 +119,7 @@ export const {
   usePostAddsMutation,
   useUpdatePostMutation,
   useDeletePostMutation,
+  useSearchByNameQuery,
   useGetByIdQuery,
   useGetSimilarsQuery,
   useGetByCategoryQuery,

@@ -4,7 +4,7 @@ import Login from "./auth/Login";
 import Registration from "./auth/Registration";
 import { FullAdd } from "./adds/FullAdd";
 import {
-  // AdvertisementListByName,
+  AdvertisementListByName,
   // AdvertisementListByCat,
   AdvertisementList,
   SimilarAdds,
@@ -60,10 +60,10 @@ export default function App() {
             //   path: "/index/cat/:id",
             //   element: <AdvertisementListByCat />,
             // },
-            // {
-            //   path: "/index/search/:name",
-            //   element: <AdvertisementListByName />,
-            // },
+            {
+              path: "/index/search/:name",
+              element: <AdvertisementListByName />,
+            },
             // {
             //   path: "/index/similars/:id/:cat_id/:price",
             //   element: <SimilarAdds />,

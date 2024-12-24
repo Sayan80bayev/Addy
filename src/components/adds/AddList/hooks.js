@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import {
   // useGetByCatQuery,
-  // useSearchByNameQuery,
+  useSearchByNameQuery,
   useGetAddsQuery,
   useGetSimilarsQuery,
 } from "../../../store";
@@ -17,9 +17,9 @@ export const useAdvertisementsByCat = () => {
 };
 
 export const useAdvertisementsByName = () => {
-  // const { name } = useParams();
-  // const { data: advertisements, isFetching } = useSearchByNameQuery(name);
-  // return { advertisements, isFetching };
+  const { name } = useParams();
+  const { data: advertisements, isFetching } = useSearchByNameQuery(name);
+  return { advertisements, isFetching };
 };
 
 // Fixing the hook to use query parameters instead of body
