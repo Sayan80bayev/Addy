@@ -90,7 +90,7 @@ export default function Home() {
           ))}
         {window.history.replaceState({}, "")}
         <SearchBar />
-        <CategoryBar />
+
         <Outlet />
         <Footer />
       </main>

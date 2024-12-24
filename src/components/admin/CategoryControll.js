@@ -4,57 +4,35 @@ import { fetchCategories } from "../api";
 import Footer from "../Footer";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { useAddCategoryMutation, useGetCatsQuery } from "../../store/api/categoryApi";
 
 const CategoryControll = () => {
   const token = localStorage.getItem("authToken");
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState("");
-  const [categories, setCategories] = useState([]);
+  const {data: categories = []} = useGetCatsQuery()
   const [parentCategory, setParentCategory] = useState(null); // New state for parent category
+  const [addCategory] = useAddCategoryMutation();
+
 
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchCategories();
-        setCategories(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
-    fetchData();
-  }, [message]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (parentCategory == null) {
-        const response = await axios.post(
-          "http://localhost:3001/api/cat/add",
-          { category_name: formData },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      } else {
-        const response = await axios.post(
-          `http://localhost:3001/api/cat/${parentCategory}/subcategories`,
-          { category_name: formData },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
+
+      addCategory({
+        parentId: parentCategory,
+        name: formData
+      })
+
       setMessage({ status: "success", message: "Successfully added!" });
     } catch (error) {
       setMessage({ status: "error", message: "Error occured!" });
       console.log(error);
     }
   };
+
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
@@ -71,6 +49,7 @@ const CategoryControll = () => {
       console.log(error);
     }
   };
+
   if (!token || jwtDecode(token).authorities != "ADMIN")
     return navigate("/index", {
       state: {
@@ -78,6 +57,7 @@ const CategoryControll = () => {
         message: "No access!",
       },
     });
+    
   return (
     <>
       <main style={{ minHeight: "800px" }}>
@@ -103,11 +83,11 @@ const CategoryControll = () => {
                     className="category"
                     style={{ flex: "1", textAlign: "center" }}
                   >
-                    {category.category_name}
+                    {category.categoryName}
                   </div>
                   <div
                     className="delete_overlay"
-                    onClick={() => handleDelete(category.category_id)}
+                    onClick={() => handleDelete(category.categoryId)}
                   >
                     <img
                       className="delete_icon"
@@ -136,10 +116,10 @@ const CategoryControll = () => {
                 <option value="">None</option>
                 {categories.map((category) => (
                   <option
-                    key={category.category_id}
-                    value={category.category_id}
+                    key={category.categoryId}
+                    value={category.categoryId}
                   >
-                    {category.category_name}
+                    {category.categoryName}
                   </option>
                 ))}
               </select>

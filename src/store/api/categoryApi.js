@@ -32,7 +32,7 @@ export const categoryApi = createApi({
     }),
     addCategory: build.mutation({
       query: (category) => ({
-        url: "/",
+        url: "",
         body: category,
         method: "POST",
       }),
