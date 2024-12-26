@@ -20,6 +20,7 @@ export const useFullAdd = (id) => {
     error: addError,
     isFetching: addFetching,
     isSuccess: addSuccess,
+    refetch: refetchAd
   } = useGetByIdQuery(id);
 
   // const {
@@ -100,6 +101,7 @@ export const useFullAdd = (id) => {
     handleDelete,
     message,
     email,
+    refetchAd,
     // similarsFetching,
     userData,
   };

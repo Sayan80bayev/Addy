@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import AlertError from "../../feedback/AlertError";
@@ -22,6 +22,7 @@ export const FullAdd = () => {
     message,
     email,
     // similarsFetching,
+    refetchAd,
     userData,
   } = useFullAdd(id);
 
@@ -37,9 +38,10 @@ export const FullAdd = () => {
       </div>
     );
   };
-
-  console.log(message);
   
+  useEffect(()=>{
+    refetchAd(id)
+  }, [message])
 
   return (
     <main>

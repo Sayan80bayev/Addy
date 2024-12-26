@@ -36,7 +36,7 @@ const CategoryControll = () => {
   const handleDelete = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3001/api/cat/delete/${id}`,
+        `http://localhost:8080/api/v1/categories/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
